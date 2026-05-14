@@ -301,7 +301,7 @@ generateFromUrl.addEventListener("click", async () => {
   }
 
   setStatus("Lendo link e pesquisando...");
-  researchStatus.textContent = "Buscando dados da pagina, imagem, fontes e gerando texto na persona...";
+    researchStatus.textContent = "Lendo o link e montando a previa. Se o site bloquear a leitura, ainda tento criar um rascunho seguro para teste.";
   try {
     const result = await postJson("/api/veredito/generate-from-url", {
       url,
@@ -316,7 +316,7 @@ generateFromUrl.addEventListener("click", async () => {
     await refreshList();
     setStatus("Rascunho automatico pronto");
   } catch (error) {
-    researchStatus.textContent = "Falhou ao ler automaticamente. Tente outro link, ou use campos avancados/manual.";
+    researchStatus.textContent = "Nao consegui ler esse link agora. Tente outro site/produto para testar.";
     setStatus(error.message);
   }
 });
