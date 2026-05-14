@@ -76,7 +76,15 @@ async function getArticleBySlug(slug, includeDraft = false) {
   return rows[0] || null;
 }
 
+async function deleteArticleBySlug(slug) {
+  return supabaseFetch(`articles?slug=eq.${encodeURIComponent(slug)}`, {
+    method: "DELETE",
+    headers: { Prefer: "return=representation" }
+  });
+}
+
 module.exports = {
+  deleteArticleBySlug,
   getArticleBySlug,
   listArticles,
   upsertArticle

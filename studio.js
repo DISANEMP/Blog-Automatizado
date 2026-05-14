@@ -247,6 +247,7 @@ function renderArticleItem(item) {
       <div class="article-actions">
         <button type="button" class="secondary" data-load="${escapeHtml(item.slug)}">Editar</button>
         ${publicUrl ? `<a class="link-button" href="${publicUrl}" target="_blank">Abrir post</a>` : ""}
+        <button type="button" class="secondary" data-delete="${escapeHtml(item.slug)}">Apagar</button>
       </div>
     </div>`;
 }
@@ -341,9 +342,21 @@ formatJson.addEventListener("click", () => {
 refreshDrafts.addEventListener("click", refreshList);
 
 articleList.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-load]");
-  if (!button) return;
-  loadArticle(button.dataset.load).catch((error) => setStatus(error.message));
+  const loadButton = event.target.closest("[data-load]");
+  const deleteButton = event.target.closest("[data-delete]");
+  if (loadButton) {
+    loadArticle(loadButton.dataset.load).catch((error) => setStatus(error.message));
+    return;
+  }
+  if (deleteButton) {
+    const slug = deleteButton.dataset.delete;
+    if (!window.confirm(`Apagar "${slug}" do Supabase?`)) return;
+    setStatus("Apagando...");
+    postJson("/api/veredito/delete", { slug })
+      .then(refreshList)
+      .then(() => setStatus("Apagado"))
+      .catch((error) => setStatus(error.message));
+  }
 });
 
 fillExample.addEventListener("click", () => {

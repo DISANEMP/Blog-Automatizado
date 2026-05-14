@@ -35,6 +35,10 @@
       "dest": "/api/veredito/article.js"
     },
     {
+      "src": "/api/veredito/delete",
+      "dest": "/api/veredito/delete.js"
+    },
+    {
       "src": "/api/veredito/preview",
       "dest": "/api/veredito/preview.js"
     },
