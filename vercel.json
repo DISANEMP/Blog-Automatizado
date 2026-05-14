@@ -27,6 +27,10 @@
       "dest": "/api/veredito/generate.js"
     },
     {
+      "src": "/api/veredito/generate-from-url",
+      "dest": "/api/veredito/generate-from-url.js"
+    },
+    {
       "src": "/api/veredito/drafts",
       "dest": "/api/veredito/drafts.js"
     },

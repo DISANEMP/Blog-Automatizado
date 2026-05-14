@@ -32,7 +32,11 @@ Regras:
 - se faltar fonte, deixe qualityChecklist.factChecked=false;
 - evite promessa exagerada e clickbait;
 - inclua aviso de afiliado indiretamente no conteudo;
-- use linguagem direta, brasileira, profissional e natural;
+- use a persona do dono: linguagem direta, brasileira, pratica, com analogias simples e humor leve quando ajudar;
+- nao imite erro de digitacao; revise ortografia e mantenha cara profissional;
+- escreva como consultor de compra, nao como catalogo;
+- se o briefing vier de URL, aproveite titulo, imagem, fonte e dados extraidos, mas deixe claro quando preco precisa ser confirmado;
+- faca uma leitura mais criativa que o obvio: crie veredito, contexto de uso, cuidado real e comparacao de compra;
 - estrutura obrigatoria: title, slug, type, status, category, metaDescription, excerpt, author, hero, shortAnswer, summaryCards, verdict, offers, sections, comparisonTable, faq, internalLinks, sources, creativeBrief, qualityChecklist.
 
 Briefing:

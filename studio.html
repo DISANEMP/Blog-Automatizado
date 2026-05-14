@@ -49,13 +49,33 @@
       <section class="panel" id="briefing">
         <div class="panel-heading">
           <div>
-            <h2>Novo post</h2>
-            <p>Informe o tema, produto, oferta e fontes. Se a chave Gemini estiver na Vercel, ele gera com IA; se nao, usa o gerador local.</p>
+            <h2>Novo post automatico</h2>
+            <p>Cole o link da oferta ou produto. O Studio tenta ler a pagina, puxar imagem, pesquisar contexto, escrever na persona e salvar como rascunho.</p>
           </div>
           <button id="fillExample" type="button" class="secondary">Exemplo</button>
         </div>
 
+        <section class="url-generator" aria-label="Gerador automatico por URL">
+          <label>
+            Link do produto/oferta
+            <input id="sourceUrl" name="sourceUrl" placeholder="https://www.casasbahia.com.br/produto..." />
+          </label>
+          <label>
+            Link afiliado, se ja tiver
+            <input id="sourceAffiliateUrl" name="sourceAffiliateUrl" placeholder="se vazio, usa o proprio link como rascunho" />
+          </label>
+          <label>
+            Angulo do post
+            <input id="sourceAngle" name="sourceAngle" value="vale comprar agora ou esperar?" />
+          </label>
+          <button id="generateFromUrl" type="button">Colar link e gerar post</button>
+          <p id="researchStatus">Pesquisa: pagina do produto + Gemini. Google Search entra quando GOOGLE_SEARCH_API_KEY e GOOGLE_SEARCH_CX estiverem configurados.</p>
+        </section>
+
         <form id="briefingForm" class="form-grid">
+          <details class="wide">
+            <summary>Campos avancados/manual</summary>
+            <div class="form-grid nested-form">
           <label>
             Tipo
             <select name="type">
@@ -136,6 +156,8 @@
             <button type="button" id="generatePreview" class="secondary">Gerar preview</button>
             <button type="button" id="publishArticle" class="danger">Aprovar e publicar</button>
           </div>
+            </div>
+          </details>
         </form>
       </section>
 

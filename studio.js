@@ -13,6 +13,11 @@ const articleList = document.querySelector("#articleList");
 const draftCount = document.querySelector("#draftCount");
 const publishedCount = document.querySelector("#publishedCount");
 const providerStatus = document.querySelector("#providerStatus");
+const generateFromUrl = document.querySelector("#generateFromUrl");
+const sourceUrl = document.querySelector("#sourceUrl");
+const sourceAffiliateUrl = document.querySelector("#sourceAffiliateUrl");
+const sourceAngle = document.querySelector("#sourceAngle");
+const researchStatus = document.querySelector("#researchStatus");
 
 let currentArticle = null;
 let currentObjectUrl = null;
@@ -287,6 +292,35 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+generateFromUrl.addEventListener("click", async () => {
+  const url = sourceUrl.value.trim();
+  if (!url) {
+    setStatus("Cole um link primeiro");
+    sourceUrl.focus();
+    return;
+  }
+
+  setStatus("Lendo link e pesquisando...");
+  researchStatus.textContent = "Buscando dados da pagina, imagem, fontes e gerando texto na persona...";
+  try {
+    const result = await postJson("/api/veredito/generate-from-url", {
+      url,
+      affiliateUrl: sourceAffiliateUrl.value.trim(),
+      angle: sourceAngle.value.trim()
+    });
+    providerStatus.textContent = result.provider || "ok";
+    putArticle(result.article);
+    researchStatus.textContent = `Extraido: ${result.extracted?.productName || result.extracted?.title || "produto"} | Fontes extras: ${result.searchSources?.length || 0}`;
+    const preview = await postJson("/api/veredito/preview", { article: result.article });
+    showRenderedResult(preview, preview.previewUrl);
+    await refreshList();
+    setStatus("Rascunho automatico pronto");
+  } catch (error) {
+    researchStatus.textContent = "Falhou ao ler automaticamente. Tente outro link, ou use campos avancados/manual.";
+    setStatus(error.message);
+  }
+});
+
 saveDraft.addEventListener("click", async () => {
   setStatus("Salvando rascunho...");
   try {
@@ -379,6 +413,9 @@ fillExample.addEventListener("click", () => {
     cons: "painel 60 Hz; audio simples; frete pode pesar; nao e OLED nem MiniLED",
     sources: "https://www.lg.com/br/\nhttps://www.casasbahia.com.br/"
   };
+  sourceUrl.value = "https://www.casasbahia.com.br/smart-tv-75-lg-4k-uhd-75ua8550psa-processador-a7-gen8-webos-25-bluetooth/p/55070130";
+  sourceAffiliateUrl.value = values.affiliateUrl;
+  sourceAngle.value = values.angle;
   for (const [key, value] of Object.entries(values)) {
     const field = form.elements[key];
     if (field) field.value = value;
