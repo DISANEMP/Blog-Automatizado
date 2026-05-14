@@ -186,6 +186,22 @@ async function api(path, payload) {
   return data;
 }
 
+function showRenderedResult(result, fallbackUrl) {
+  if (result.html) {
+    previewFrame.removeAttribute("src");
+    previewFrame.srcdoc = result.html;
+    const blob = new Blob([result.html], { type: "text/html" });
+    openPreview.href = URL.createObjectURL(blob);
+    return;
+  }
+
+  if (fallbackUrl) {
+    previewFrame.removeAttribute("srcdoc");
+    previewFrame.src = `${fallbackUrl}?t=${Date.now()}`;
+    openPreview.href = fallbackUrl;
+  }
+}
+
 function getArticleFromEditor() {
   try {
     return JSON.parse(jsonEditor.value);
@@ -210,8 +226,7 @@ generatePreview.addEventListener("click", async () => {
   try {
     const article = getArticleFromEditor();
     const result = await api("/api/veredito/preview", { article });
-    previewFrame.src = `${result.previewUrl}?t=${Date.now()}`;
-    openPreview.href = result.previewUrl;
+    showRenderedResult(result, result.previewUrl);
     putArticle(result.article);
     setStatus("Prévia pronta");
   } catch (error) {
@@ -226,10 +241,9 @@ publishArticle.addEventListener("click", async () => {
   try {
     const article = getArticleFromEditor();
     const result = await api("/api/veredito/publish", { article });
-    previewFrame.src = `${result.postUrl}?t=${Date.now()}`;
-    openPreview.href = result.postUrl;
+    showRenderedResult(result, result.postUrl);
     putArticle(result.article);
-    setStatus("Publicado");
+    setStatus(result.postUrl ? "Publicado" : "Aprovado em prÃ©via");
   } catch (error) {
     setStatus(error.message);
   }
