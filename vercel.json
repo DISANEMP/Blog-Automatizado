@@ -12,8 +12,16 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/api/veredito/config",
+      "dest": "/api/veredito/config.js"
+    },
+    {
+      "src": "/api/veredito/preview",
+      "dest": "/api/veredito/preview.js"
+    },
+    {
+      "src": "/api/veredito/publish",
+      "dest": "/api/veredito/publish.js"
     },
     {
       "src": "/",
