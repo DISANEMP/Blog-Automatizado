@@ -2,6 +2,7 @@ const {
   renderPage,
   slugify
 } = require("../../scripts/render-veredito");
+const { upsertArticle } = require("../_lib/supabase-admin");
 
 function normalizeArticle(article) {
   const now = new Date().toISOString();
@@ -16,7 +17,7 @@ function normalizeArticle(article) {
   };
 }
 
-module.exports = function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Metodo nao permitido." });
     return;
@@ -28,13 +29,22 @@ module.exports = function handler(req, res) {
     return;
   }
 
-  const normalized = normalizeArticle(article);
-  const html = renderPage(normalized, { mode: "preview" });
-  res.status(200).json({
-    ok: true,
-    article: normalized,
-    html,
-    postUrl: null,
-    note: "Publicacao real em producao precisa ser ligada ao GitHub, CMS ou Supabase Storage. Este retorno mostra a pagina aprovada em memoria."
-  });
+  try {
+    const normalized = normalizeArticle(article);
+    const row = await upsertArticle(normalized, "published");
+    const html = renderPage(row.content_json, { mode: "publish" });
+    res.status(200).json({
+      ok: true,
+      article: row.content_json,
+      record: row,
+      html,
+      postUrl: `/p/${row.slug}`,
+      note: "Publicado no Supabase e disponivel em URL publica dinamica."
+    });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      error: error.message,
+      details: error.details || null
+    });
+  }
 };

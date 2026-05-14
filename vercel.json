@@ -23,6 +23,18 @@
       "dest": "/api/veredito/config.js"
     },
     {
+      "src": "/api/veredito/generate",
+      "dest": "/api/veredito/generate.js"
+    },
+    {
+      "src": "/api/veredito/drafts",
+      "dest": "/api/veredito/drafts.js"
+    },
+    {
+      "src": "/api/veredito/article",
+      "dest": "/api/veredito/article.js"
+    },
+    {
       "src": "/api/veredito/preview",
       "dest": "/api/veredito/preview.js"
     },
@@ -33,6 +45,10 @@
     {
       "src": "/",
       "dest": "/index.html"
+    },
+    {
+      "src": "/p/([^/]+)",
+      "dest": "/api/veredito/post.js?slug=$1"
     },
     {
       "src": "/(.*)",

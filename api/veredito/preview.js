@@ -2,6 +2,7 @@ const {
   renderPage,
   slugify
 } = require("../../scripts/render-veredito");
+const { upsertArticle } = require("../_lib/supabase-admin");
 
 function normalizeArticle(article, status = "preview") {
   const now = new Date().toISOString();
@@ -16,7 +17,7 @@ function normalizeArticle(article, status = "preview") {
   };
 }
 
-module.exports = function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Metodo nao permitido." });
     return;
@@ -28,13 +29,22 @@ module.exports = function handler(req, res) {
     return;
   }
 
-  const normalized = normalizeArticle(article, "preview");
-  const html = renderPage(normalized, { mode: "preview" });
-  res.status(201).json({
-    ok: true,
-    article: normalized,
-    html,
-    previewUrl: null,
-    note: "Preview renderizado em memoria na Vercel."
-  });
+  try {
+    const normalized = normalizeArticle(article, "draft");
+    const row = await upsertArticle(normalized, "draft");
+    const html = renderPage(row.content_json, { mode: "preview" });
+    res.status(201).json({
+      ok: true,
+      article: row.content_json,
+      record: row,
+      html,
+      previewUrl: null,
+      note: "Preview salvo como rascunho no Supabase."
+    });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      error: error.message,
+      details: error.details || null
+    });
+  }
 };
