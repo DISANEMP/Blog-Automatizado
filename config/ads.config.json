@@ -1,0 +1,51 @@
+{
+  "provider": "google-adsense",
+  "enabled": false,
+  "clientId": "ca-pub-0000000000000000",
+  "policy": {
+    "adsAreSecondary": true,
+    "noPopups": true,
+    "noAdsBlockingContent": true,
+    "maxSlotsPerArticle": 4,
+    "mobileFirst": true
+  },
+  "slots": [
+    {
+      "id": "after-intro",
+      "label": "Publicidade",
+      "format": "responsive",
+      "adSlot": "",
+      "placement": "afterShortAnswer",
+      "enabled": true
+    },
+    {
+      "id": "mid-article",
+      "label": "Publicidade",
+      "format": "rectangle",
+      "adSlot": "",
+      "placement": "afterMainComparison",
+      "enabled": true
+    },
+    {
+      "id": "sidebar",
+      "label": "Publicidade",
+      "format": "rectangle",
+      "adSlot": "",
+      "placement": "sidebarDesktop",
+      "enabled": true
+    },
+    {
+      "id": "end-article",
+      "label": "Publicidade",
+      "format": "responsive",
+      "adSlot": "",
+      "placement": "beforeConclusion",
+      "enabled": false
+    }
+  ],
+  "consent": {
+    "required": true,
+    "cookieBannerEnabled": false,
+    "privacyPolicyUrl": "/privacidade.html"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "brand": {
+    "name": "Veredito Tech",
+    "tagline": "Compra inteligente, sem empurrar oferta",
+    "logoText": "VT",
+    "siteUrl": "https://seudominio.com.br",
+    "language": "pt-BR"
+  },
+  "author": {
+    "name": "Equipe Veredito Tech",
+    "role": "Curadoria editorial de tecnologia e ofertas",
+    "bio": "Ajudamos leitores a comparar produtos de tecnologia antes de comprar, com veredito claro, preco ideal, links transparentes e revisao humana."
+  },
+  "editorial": {
+    "defaultCategory": "Tecnologia",
+    "defaultDisclosure": "Este conteudo pode conter links de afiliado. Podemos receber comissao se voce comprar pelo link, sem custo adicional para voce.",
+    "reviewMethodDisclosure": "Este conteudo foi produzido com pesquisa assistida por IA, curadoria editorial e revisao humana antes da publicacao.",
+    "dateFormat": "pt-BR",
+    "timezone": "America/Sao_Paulo"
+  },
+  "publishing": {
+    "previewDir": "previews",
+    "postsDir": "posts",
+    "requireHumanApproval": true,
+    "allowSimulatedPricesInPreview": true,
+    "allowSimulatedPricesInPublished": false
+  }
+}

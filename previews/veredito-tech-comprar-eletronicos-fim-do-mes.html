@@ -1,0 +1,931 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Eletrônicos ficam mais baratos no fim do mês? | Veredito Tech</title>
+    <meta
+      name="description"
+      content="TV, smartphone, caixa de som e outros eletrônicos podem ter boas ofertas no fim do mês? Entenda quando esperar, quando comprar e como evitar falsas promoções."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f7fb;
+        --ink: #111827;
+        --muted: #657186;
+        --line: #dbe3ee;
+        --panel: #ffffff;
+        --brand: #0f766e;
+        --brand-dark: #0b5f59;
+        --blue: #1d4ed8;
+        --red: #be123c;
+        --yellow: #facc15;
+        --shadow: 0 22px 70px rgba(15, 23, 42, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .preview-note {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        padding: 9px 14px;
+        background: #111827;
+        color: #fff;
+        text-align: center;
+        font-size: 0.82rem;
+        font-weight: 850;
+      }
+
+      .site-header {
+        background:
+          radial-gradient(circle at 84% 14%, rgba(94, 234, 212, 0.2), transparent 30%),
+          linear-gradient(135deg, #08111f 0%, #142136 48%, #102f35 100%);
+        color: #fff;
+      }
+
+      .nav,
+      .hero,
+      .summary-strip,
+      .shell,
+      .footer {
+        width: min(1160px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .nav {
+        min-height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-weight: 950;
+      }
+
+      .logo-mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: linear-gradient(145deg, #5eead4, #0f766e);
+        color: #05201e;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 18px;
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 0.94rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+      }
+
+      .hero {
+        min-height: 70vh;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 430px;
+        gap: 42px;
+        align-items: center;
+        padding: 42px 0 56px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: #67e8f9;
+        font-size: 0.77rem;
+        font-weight: 950;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 860px;
+        font-size: clamp(2.25rem, 5.6vw, 4.9rem);
+        line-height: 0.98;
+      }
+
+      .hero p:not(.eyebrow) {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.08rem;
+        line-height: 1.65;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .btn,
+      .btn-light,
+      .btn-ghost {
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        padding: 0 16px;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .btn {
+        background: var(--brand);
+        color: #fff;
+      }
+
+      .btn-light {
+        background: #fff;
+        color: var(--brand-dark);
+      }
+
+      .btn-ghost {
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        color: #fff;
+      }
+
+      .visual-card {
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .calendar-card {
+        min-height: 430px;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+        border-radius: 12px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .calendar-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px;
+        background: #0f172a;
+        color: #fff;
+      }
+
+      .calendar-top strong {
+        font-size: 1.15rem;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+        padding: 18px;
+      }
+
+      .day {
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: #eef2f7;
+        color: #596579;
+        font-weight: 850;
+      }
+
+      .day.hot {
+        background: #dcfce7;
+        color: #166534;
+        outline: 2px solid #86efac;
+      }
+
+      .day.today {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+
+      .calendar-note {
+        padding: 0 18px 18px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .summary-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        padding: 0 0 28px;
+      }
+
+      .summary-strip div {
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .summary-strip strong {
+        display: block;
+      }
+
+      .summary-strip span {
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 0.88rem;
+      }
+
+      .shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 330px;
+        gap: 22px;
+        padding: 28px 0 60px;
+      }
+
+      .article,
+      .rail-card,
+      .ad,
+      .offer-card {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+      }
+
+      .article {
+        padding: min(6vw, 46px);
+      }
+
+      .article p,
+      .article li,
+      .rail-card p,
+      .footer p {
+        color: #354154;
+        line-height: 1.76;
+        font-size: 1.02rem;
+      }
+
+      h2 {
+        margin: 34px 0 12px;
+        font-size: clamp(1.55rem, 3vw, 2.25rem);
+        line-height: 1.1;
+      }
+
+      h3 {
+        margin: 18px 0 8px;
+      }
+
+      .notice {
+        padding: 14px 16px;
+        border: 1px solid var(--yellow);
+        border-radius: 8px;
+        background: #fffbeb;
+        color: #4b3a09;
+        line-height: 1.55;
+      }
+
+      .answer {
+        margin: 24px 0;
+        padding: 18px;
+        border: 1px solid #67e8f9;
+        border-radius: 10px;
+        background: #ecfeff;
+      }
+
+      .answer strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #075985;
+      }
+
+      .ad {
+        min-height: 96px;
+        display: grid;
+        place-items: center;
+        margin: 22px 0;
+        padding: 14px;
+        border-style: dashed;
+        color: var(--muted);
+        text-align: center;
+        background: #fbfdff;
+      }
+
+      .ad small {
+        display: block;
+        color: #94a3b8;
+      }
+
+      .cards,
+      .pros-cons,
+      .decision-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 22px 0;
+      }
+
+      .pros-cons,
+      .decision-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card,
+      .box {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fbfdff;
+      }
+
+      .card span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
+      .card strong {
+        display: block;
+        margin-top: 5px;
+        font-size: 1.04rem;
+      }
+
+      .box.good {
+        border-color: #86efac;
+        background: #f0fdf4;
+      }
+
+      .box.warn {
+        border-color: #fecdd3;
+        background: #fff1f2;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+      }
+
+      table {
+        width: 100%;
+        min-width: 720px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 13px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #eef6ff;
+        color: #172554;
+      }
+
+      .offer-card {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 18px;
+        align-items: center;
+        margin: 28px 0;
+        padding: 18px;
+        background: linear-gradient(135deg, #f0fdf4, #ffffff);
+        border-color: #86efac;
+      }
+
+      .price {
+        margin: 6px 0;
+        color: var(--red);
+        font-size: 1.85rem;
+        font-weight: 950;
+        line-height: 1;
+      }
+
+      .coupon {
+        display: inline-flex;
+        min-height: 34px;
+        align-items: center;
+        padding: 0 10px;
+        border: 1px dashed var(--brand);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--brand-dark);
+        font-weight: 950;
+      }
+
+      .rail {
+        align-self: start;
+        position: sticky;
+        top: 48px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .rail-card {
+        padding: 17px;
+      }
+
+      .score {
+        display: block;
+        color: var(--blue);
+        font-size: 2.2rem;
+        font-weight: 950;
+        line-height: 1;
+      }
+
+      .mini-list {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .mini-list li {
+        display: flex;
+        gap: 8px;
+        font-size: 0.96rem;
+        line-height: 1.45;
+      }
+
+      .mini-list li::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        flex: 0 0 8px;
+        margin-top: 7px;
+        border-radius: 999px;
+        background: var(--brand);
+      }
+
+      .group-card {
+        background: #0f172a;
+        color: #fff;
+        border-color: #0f172a;
+      }
+
+      .group-card p {
+        color: rgba(255, 255, 255, 0.74);
+      }
+
+      .group-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .footer {
+        padding: 24px 0 42px;
+        border-top: 1px solid var(--line);
+      }
+
+      @media (max-width: 960px) {
+        .hero,
+        .shell {
+          grid-template-columns: 1fr;
+        }
+
+        .rail {
+          position: static;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .preview-note {
+          position: static;
+          font-size: 0.75rem;
+        }
+
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 12px;
+          min-height: 0;
+          padding: 14px 0;
+        }
+
+        .nav-links {
+          width: 100%;
+          overflow-x: auto;
+          padding-bottom: 4px;
+          gap: 12px;
+          scrollbar-width: none;
+          white-space: nowrap;
+        }
+
+        .hero {
+          min-height: auto;
+          gap: 24px;
+          padding: 24px 0 28px;
+        }
+
+        h1 {
+          font-size: clamp(2rem, 13vw, 3.2rem);
+          line-height: 1.02;
+        }
+
+        .hero p:not(.eyebrow) {
+          font-size: 1rem;
+          line-height: 1.58;
+        }
+
+        .hero-actions {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .btn,
+        .btn-light,
+        .btn-ghost {
+          width: 100%;
+          min-height: 48px;
+          text-align: center;
+        }
+
+        .visual-card {
+          padding: 10px;
+        }
+
+        .calendar-card {
+          min-height: 0;
+        }
+
+        .calendar-grid {
+          gap: 5px;
+          padding: 12px;
+        }
+
+        .calendar-note {
+          font-size: 0.92rem;
+        }
+
+        .summary-strip,
+        .cards,
+        .pros-cons,
+        .decision-grid,
+        .offer-card {
+          grid-template-columns: 1fr;
+        }
+
+        .article {
+          padding: 22px;
+        }
+
+        .article p,
+        .article li,
+        .rail-card p,
+        .footer p {
+          font-size: 0.98rem;
+          line-height: 1.68;
+        }
+
+        h2 {
+          font-size: 1.55rem;
+          line-height: 1.16;
+        }
+
+        .price {
+          font-size: 1.45rem;
+        }
+
+        table {
+          min-width: 600px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="preview-note">PREVIA HTML - artigo de estratégia de compra, ainda não publicado</div>
+
+    <header class="site-header">
+      <nav class="nav" aria-label="Navegacao principal">
+        <a class="logo" href="#">
+          <span class="logo-mark">VT</span>
+          <span>Veredito Tech</span>
+        </a>
+        <div class="nav-links">
+          <a href="#resposta">Resposta</a>
+          <a href="#quando">Quando comprar</a>
+          <a href="#checklist">Checklist</a>
+          <a href="#ofertas">Ofertas</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Timing de compra</p>
+          <h1>TV, smartphone e caixa de som são como carro: às vezes vale comprar no fim do mês</h1>
+          <p>
+            Não é regra mágica, mas existe lógica: varejo trabalha com metas, estoque, campanhas e fechamento de período.
+            Para quem está de olho em eletrônicos, esperar alguns dias pode separar uma compra comum de uma oferta que
+            realmente faz sentido.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-light" href="#checklist">Ver checklist</a>
+            <a class="btn-ghost" href="#ofertas">Ver ofertas simuladas</a>
+          </div>
+        </div>
+
+        <div class="visual-card" aria-label="Calendario de fim do mes para compras">
+          <div class="calendar-card">
+            <div class="calendar-top">
+              <strong>Fim do mês</strong>
+              <span>janela de atenção</span>
+            </div>
+            <div class="calendar-grid">
+              <span class="day">1</span><span class="day">2</span><span class="day">3</span><span class="day">4</span>
+              <span class="day">5</span><span class="day">6</span><span class="day">7</span><span class="day">8</span>
+              <span class="day">9</span><span class="day">10</span><span class="day">11</span><span class="day">12</span>
+              <span class="day">13</span><span class="day">14</span><span class="day">15</span><span class="day">16</span>
+              <span class="day">17</span><span class="day">18</span><span class="day">19</span><span class="day">20</span>
+              <span class="day">21</span><span class="day">22</span><span class="day">23</span><span class="day">24</span>
+              <span class="day today">25</span><span class="day hot">26</span><span class="day hot">27</span><span class="day hot">28</span>
+              <span class="day hot">29</span><span class="day hot">30</span><span class="day hot">31</span>
+            </div>
+            <p class="calendar-note">
+              A ideia não é comprar qualquer coisa no impulso. É monitorar preço, cupom, frete e estoque quando a loja
+              pode estar mais agressiva para fechar meta.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary-strip">
+        <div>
+          <strong>Melhor para</strong>
+          <span>TV, celular, áudio e informática</span>
+        </div>
+        <div>
+          <strong>Não é garantia</strong>
+          <span>preço bom precisa ser confirmado</span>
+        </div>
+        <div>
+          <strong>Risco</strong>
+          <span>falsa promoção e urgência artificial</span>
+        </div>
+        <div>
+          <strong>Estratégia</strong>
+          <span>monitorar antes de clicar</span>
+        </div>
+      </section>
+    </header>
+
+    <main class="shell">
+      <article class="article">
+        <div class="notice">
+          <strong>Transparência:</strong>
+          este artigo pode conter links de afiliado simulados. Podemos receber comissão se você comprar pelo link, sem
+          custo adicional. A recomendação principal é comparar preço antes de comprar.
+        </div>
+
+        <section class="answer" id="resposta">
+          <strong>Resposta curta</strong>
+          Sim, em muitos casos vale prestar atenção no fim do mês para comprar TV, smartphone, caixa de som e eletrônicos
+          em geral. Assim como acontece em concessionárias, o varejo pode ficar mais agressivo quando precisa girar
+          estoque, bater meta ou encerrar campanha. Mas desconto bom não é promessa: é algo que se confirma com histórico,
+          cupom, frete e preço final.
+        </section>
+
+        <div class="cards">
+          <div class="card">
+            <span>Compra esperta</span>
+            <strong>monitorar 7 a 10 dias</strong>
+          </div>
+          <div class="card">
+            <span>Melhor janela</span>
+            <strong>última semana do mês</strong>
+          </div>
+          <div class="card">
+            <span>Regra de ouro</span>
+            <strong>preço final manda</strong>
+          </div>
+        </div>
+
+        <div class="ad">
+          <strong>Publicidade</strong>
+          <small>Bloco AdSense simulado 728x90 - leve e sem interromper a leitura</small>
+        </div>
+
+        <h2>Por que o fim do mês pode ter boas ofertas?</h2>
+        <p>
+          Quem já pesquisou carro sabe que vendedor costuma falar mais forte quando o mês está acabando. Com eletrônicos,
+          a lógica não é idêntica, mas tem pontos parecidos: varejistas trabalham com metas, campanhas, estoque parado,
+          verba de mídia, fechamento de período e negociação com fabricantes.
+        </p>
+        <p>
+          Isso pode gerar cupons, redução temporária, cashback, frete melhor ou condição de pagamento mais agressiva.
+          Às vezes a diferença não aparece no preço de vitrine, mas no carrinho: cupom aplicado, Pix mais barato ou
+          parcelamento que ficou melhor.
+        </p>
+
+        <h2 id="quando">Quando faz sentido esperar?</h2>
+        <div class="pros-cons">
+          <div class="box good">
+            <h3>Vale esperar se...</h3>
+            <ul>
+              <li>você não precisa do produto hoje;</li>
+              <li>o preço atual parece normal, sem desconto claro;</li>
+              <li>o produto aparece com frequência em promoção;</li>
+              <li>há datas próximas como fim do mês, virada de campanha ou saldão;</li>
+              <li>você consegue comparar em duas ou três lojas confiáveis.</li>
+            </ul>
+          </div>
+          <div class="box warn">
+            <h3>Melhor comprar logo se...</h3>
+            <ul>
+              <li>o preço já está abaixo do histórico recente;</li>
+              <li>tem cupom forte e estoque limitado em loja confiável;</li>
+              <li>o frete está bom para sua região;</li>
+              <li>você precisa do produto para trabalho;</li>
+              <li>a diferença para esperar é pequena demais.</li>
+            </ul>
+          </div>
+        </div>
+
+        <section class="offer-card" id="ofertas">
+          <div>
+            <p class="eyebrow" style="color: var(--brand)">Ofertas simuladas</p>
+            <h2 style="margin-top: 0">Eletrônicos para monitorar no fim do mês</h2>
+            <p class="price">TV 75", smartphone premium e caixa Bluetooth</p>
+            <span class="coupon">CUPOM: FIMDOMES</span>
+            <p>
+              Link simulado no estilo “clique aqui”. No post publicado, cada card teria preço real, loja, frete e data
+              da última checagem.
+            </p>
+          </div>
+          <a class="btn" href="https://example.com/ofertas-fim-do-mes-afiliado" rel="sponsored nofollow">
+            Clique aqui e veja as ofertas
+          </a>
+        </section>
+
+        <h2>Produtos que combinam com essa estratégia</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Categoria</th>
+                <th>Por que monitorar</th>
+                <th>O que conferir antes de comprar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TVs</td>
+                <td>Ticket alto, estoque grande e variação forte entre lojas.</td>
+                <td>Tamanho, painel, 60/120 Hz, frete, garantia e instalação.</td>
+              </tr>
+              <tr>
+                <td>Smartphones</td>
+                <td>Modelos mudam rápido e versões anteriores caem quando chega linha nova.</td>
+                <td>Armazenamento, garantia nacional, vendedor e preço comparado.</td>
+              </tr>
+              <tr>
+                <td>Caixas de som</td>
+                <td>Promoções aparecem em campanhas de áudio, verão e datas de presente.</td>
+                <td>Potência, bateria, resistência à água e se é produto original.</td>
+              </tr>
+              <tr>
+                <td>Notebooks</td>
+                <td>Varejo mexe muito em cupom, Pix e parcelamento.</td>
+                <td>Processador, RAM, SSD, tela, teclado e upgrade possível.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="checklist">Checklist para não cair em falsa promoção</h2>
+        <ul>
+          <li>Compare o preço em pelo menos três lojas confiáveis.</li>
+          <li>Confira se o desconto não foi criado em cima de um preço inflado.</li>
+          <li>Veja o preço final com frete, cupom e forma de pagamento.</li>
+          <li>Confirme se o vendedor é oficial, loja própria ou marketplace confiável.</li>
+          <li>Leia as avaliações recentes do produto e da entrega.</li>
+          <li>Guarde print ou link da oferta caso precise acionar garantia ou suporte.</li>
+        </ul>
+
+        <div class="ad">
+          <strong>Publicidade</strong>
+          <small>Bloco AdSense simulado in-article 336x280 - depois de conteúdo útil</small>
+        </div>
+
+        <h2>O que é “preço bom” de verdade?</h2>
+        <p>
+          Preço bom não é só “de R$ 5.999 por R$ 4.999”. Preço bom é quando o valor atual faz sentido contra o histórico
+          recente, contra os concorrentes e contra o benefício que você vai usar. Uma TV de 75 polegadas pode parecer
+          barata, mas se o frete custar caro ou se uma QNED estiver pouco acima, talvez a decisão mude.
+        </p>
+
+        <section class="decision-grid">
+          <div class="box">
+            <h3>Boa decisão</h3>
+            <p>Comprar quando preço, frete, cupom, vendedor e necessidade combinam.</p>
+          </div>
+          <div class="box warn">
+            <h3>Compra por impulso</h3>
+            <p>Clicar só porque apareceu contagem regressiva, selo vermelho ou “últimas unidades”.</p>
+          </div>
+        </section>
+
+        <h2>Perguntas frequentes</h2>
+        <h3>Todo fim de mês tem promoção boa?</h3>
+        <p>
+          Não. Fim de mês é uma janela para observar, não garantia de desconto. Algumas ofertas boas aparecem antes,
+          outras depois. O que vale é monitorar.
+        </p>
+
+        <h3>Black Friday ainda é melhor?</h3>
+        <p>
+          Para muitas categorias, sim. Mas nem toda compra pode esperar até novembro. Fim de mês, troca de coleção e
+          campanhas pontuais podem render boas oportunidades ao longo do ano.
+        </p>
+
+        <h3>Vale entrar em grupo de ofertas?</h3>
+        <p>
+          Vale, desde que o grupo tenha curadoria. O ideal é receber oferta com preço, loja, cupom, aviso de afiliado e
+          contexto do motivo daquela compra fazer sentido.
+        </p>
+
+        <h2>Conclusão</h2>
+        <p>
+          Eletrônicos são parecidos com carro em um ponto: timing importa. Comprar TV, smartphone, caixa de som ou notebook
+          no fim do mês pode ser uma boa estratégia, desde que você não confunda urgência com oportunidade. O melhor
+          comprador não é quem espera para sempre. É quem sabe reconhecer quando o preço ficou bom de verdade.
+        </p>
+      </article>
+
+      <aside class="rail">
+        <section class="rail-card">
+          <span class="score">Guia</span>
+          <h3>Veredito rápido</h3>
+          <p>Fim do mês pode ser boa janela, mas só compre com preço final validado.</p>
+        </section>
+
+        <section class="rail-card group-card">
+          <h3>Receba alertas de oferta</h3>
+          <p>Canal simulado para ofertas verificadas com preço, cupom, frete e data da checagem.</p>
+          <div class="group-actions">
+            <a class="btn-light" href="#">WhatsApp</a>
+            <a class="btn-light" href="#">Telegram</a>
+          </div>
+        </section>
+
+        <section class="rail-card">
+          <h3>Links internos sugeridos</h3>
+          <ul class="mini-list">
+            <li>LG 75UA8550PSA vale a pena?</li>
+            <li>OLED, MiniLED ou QNED?</li>
+            <li>Melhores TVs 75 polegadas</li>
+            <li>TV 60 Hz ou 120 Hz?</li>
+          </ul>
+        </section>
+
+        <section class="rail-card">
+          <h3>Anúncio lateral</h3>
+          <div class="ad" style="margin: 0; min-height: 250px">
+            <strong>AdSense 300x250</strong>
+            <small>simulado</small>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Esta prévia foi criada com foco em HumanizationAgent, PageBuilderAgent, VisualQAAgent, OfferTimingAgent e
+        InternalLinkingAgent. Antes de publicar, adicionar exemplos reais de ofertas e links internos definitivos.
+      </p>
+    </footer>
+  </body>
+</html>

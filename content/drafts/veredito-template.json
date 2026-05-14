@@ -1,0 +1,99 @@
+{
+  "type": "review",
+  "status": "preview",
+  "title": "Titulo do artigo",
+  "slug": "titulo-do-artigo",
+  "category": "Tecnologia",
+  "metaDescription": "Meta description com ate 160 caracteres, clara e orientada a compra.",
+  "excerpt": "Resumo curto do artigo.",
+  "author": "Equipe Veredito Tech",
+  "hero": {
+    "eyebrow": "Review honesto antes de comprar",
+    "subtitle": "Texto curto com o ponto principal do artigo.",
+    "primaryCta": "Ver oferta",
+    "secondaryCta": "Ler veredito",
+    "visualType": "css-illustration",
+    "imageUrl": "",
+    "imageAlt": ""
+  },
+  "shortAnswer": {
+    "label": "Resposta curta",
+    "text": "Resposta objetiva logo no inicio. Sem enrolar, sem promessa exagerada."
+  },
+  "summaryCards": [
+    { "label": "Melhor para", "value": "Perfil ideal" },
+    { "label": "Atencao", "value": "Principal limite" },
+    { "label": "Preco bom", "value": "Faixa de preco" },
+    { "label": "Veredito", "value": "Comprar, esperar ou comparar" }
+  ],
+  "verdict": {
+    "score": "8,0",
+    "summary": "Resumo do veredito editorial.",
+    "bestFor": ["Perfil 1", "Perfil 2"],
+    "avoidIf": ["Perfil que deve evitar"]
+  },
+  "offers": [
+    {
+      "title": "Oferta principal",
+      "marketplace": "Marketplace",
+      "originalUrl": "https://example.com/original",
+      "affiliateUrl": "https://example.com/afiliado",
+      "currentPrice": "R$ 0,00",
+      "regularPrice": "R$ 0,00",
+      "coupon": "CUPOM",
+      "label": "Oferta simulada",
+      "seller": "Loja",
+      "lastCheckedAt": "2026-05-14",
+      "priceStatus": "simulated"
+    }
+  ],
+  "sections": [
+    {
+      "heading": "Veredito rapido",
+      "body": "Explique a decisao de compra com linguagem humana."
+    },
+    {
+      "heading": "Para quem vale a pena",
+      "body": "Explique o perfil ideal."
+    },
+    {
+      "heading": "Pontos de atencao",
+      "body": "Explique limitacoes e riscos."
+    }
+  ],
+  "comparisonTable": {
+    "columns": ["Opcao", "Melhor para", "Ponto forte", "Atencao"],
+    "rows": [
+      ["Produto A", "Perfil A", "Beneficio", "Limite"]
+    ]
+  },
+  "faq": [
+    {
+      "question": "Pergunta frequente?",
+      "answer": "Resposta clara e honesta."
+    }
+  ],
+  "internalLinks": [
+    {
+      "title": "Artigo relacionado",
+      "url": "#",
+      "reason": "Ajuda o leitor no proximo passo."
+    }
+  ],
+  "sources": [
+    {
+      "name": "Fonte",
+      "url": "https://example.com",
+      "note": "O que foi consultado.",
+      "checkedAt": "2026-05-14"
+    }
+  ],
+  "creativeBrief": "Criar visual proprio, premium, mobile-first e relacionado ao produto.",
+  "qualityChecklist": {
+    "factChecked": false,
+    "proofread": true,
+    "mobileChecked": true,
+    "affiliateDisclosureIncluded": true,
+    "simulatedPricesOnlyInPreview": true
+  }
+}

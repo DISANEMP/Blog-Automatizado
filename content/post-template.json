@@ -1,0 +1,32 @@
+{
+  "slug": "nome-do-post",
+  "title": "Título do post",
+  "category": "Categoria",
+  "readTime": "6 min",
+  "description": "Resumo curto para SEO.",
+  "image": "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80",
+  "sections": [
+    {
+      "heading": "Introdução",
+      "paragraphs": [
+        "Explique o problema do leitor e antecipe a promessa do artigo."
+      ]
+    },
+    {
+      "heading": "Como escolher",
+      "paragraphs": [
+        "Liste critérios objetivos, exemplos e erros comuns."
+      ]
+    }
+  ],
+  "affiliateBox": "Insira uma recomendação clara, transparente e útil.",
+  "offers": [
+    {
+      "name": "Nome da oferta",
+      "program": "Programa",
+      "description": "Por que combina com o artigo.",
+      "price": "Ver preço",
+      "url": "#"
+    }
+  ]
+}

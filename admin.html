@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Motor Afiliado Tech IA</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="admin.html">Motor Afiliado Tech IA</a>
+      <nav>
+        <a href="#novo">Novo artigo</a>
+        <a href="#rascunhos">Rascunhos</a>
+        <a href="index.html" target="_blank">Ver blog</a>
+      </nav>
+      <p>Gere, revise, aprove e publique artigos SEO para afiliado sem criar postagens em redes sociais.</p>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Painel editorial</p>
+          <h1>Gerador de publicações</h1>
+        </div>
+        <span id="statusBadge">Pronto</span>
+      </header>
+
+      <section class="panel" id="novo">
+        <div class="panel-heading">
+          <h2>Dados do produto</h2>
+          <p>Preencha o essencial. O sistema gera um rascunho SEO com veredito, FAQ, CTA e aviso de afiliado.</p>
+        </div>
+
+        <form id="generatorForm" class="form-grid">
+          <label>
+            Produto
+            <input name="product" required placeholder="Galaxy S24 FE" />
+          </label>
+          <label>
+            Categoria
+            <input name="category" placeholder="Celulares custo-benefício" />
+          </label>
+          <label>
+            Público ideal
+            <input name="audience" placeholder="quem quer celular bom para foto e trabalho" />
+          </label>
+          <label>
+            Concorrentes
+            <input name="competitors" placeholder="iPhone 15, Galaxy A56, Poco F6" />
+          </label>
+          <label>
+            Faixa de preço ideal
+            <input name="idealPrice" placeholder="abaixo de R$ 2.500" />
+          </label>
+          <label>
+            Marketplace
+            <input name="marketplace" placeholder="Amazon, Magalu, Mercado Livre" />
+          </label>
+          <label>
+            Preço atual
+            <input name="currentPrice" placeholder="R$ 2.299" />
+          </label>
+          <label>
+            Comissão estimada
+            <input name="estimatedCommission" placeholder="3% a 8%" />
+          </label>
+          <label>
+            Link original
+            <input name="originalUrl" placeholder="https://..." />
+          </label>
+          <label>
+            Link de afiliado
+            <input name="affiliateUrl" placeholder="https://..." />
+          </label>
+          <label class="wide">
+            Imagem autorizada ou imagem neutra
+            <input name="image" placeholder="https://imagem-autorizada.com/produto.jpg" />
+          </label>
+          <label class="wide">
+            Observações para revisão humana
+            <textarea name="note" placeholder="Confirmar versão, garantia, preço e reputação do vendedor antes de publicar."></textarea>
+          </label>
+          <button type="submit">Gerar rascunho</button>
+        </form>
+      </section>
+
+      <section class="panel" id="rascunhos">
+        <div class="panel-heading">
+          <h2>Fila de aprovação</h2>
+          <p>Revise o conteúdo. Quando estiver bom, use um clique para aprovar e publicar no blog.</p>
+        </div>
+        <div id="draftList" class="draft-list"></div>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

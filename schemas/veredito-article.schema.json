@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vereditotech.local/schemas/veredito-article.schema.json",
+  "title": "Veredito Tech Article",
+  "type": "object",
+  "required": [
+    "type",
+    "status",
+    "title",
+    "slug",
+    "category",
+    "metaDescription",
+    "hero",
+    "shortAnswer",
+    "sections"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["review", "comparison", "guide", "ranking", "deal", "news-analysis"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "preview", "approved", "published"]
+    },
+    "title": { "type": "string", "minLength": 10 },
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "category": { "type": "string" },
+    "metaDescription": { "type": "string", "minLength": 50, "maxLength": 170 },
+    "excerpt": { "type": "string" },
+    "publishDate": { "type": "string" },
+    "updatedDate": { "type": "string" },
+    "author": { "type": "string" },
+    "hero": {
+      "type": "object",
+      "required": ["eyebrow", "subtitle"],
+      "properties": {
+        "eyebrow": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "primaryCta": { "type": "string" },
+        "secondaryCta": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "imageAlt": { "type": "string" },
+        "visualType": {
+          "type": "string",
+          "enum": ["product-image", "css-illustration", "comparison-cards", "none"]
+        }
+      }
+    },
+    "shortAnswer": {
+      "type": "object",
+      "required": ["label", "text"],
+      "properties": {
+        "label": { "type": "string" },
+        "text": { "type": "string" }
+      }
+    },
+    "summaryCards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "value"],
+        "properties": {
+          "label": { "type": "string" },
+          "value": { "type": "string" }
+        }
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "properties": {
+        "score": { "type": "string" },
+        "summary": { "type": "string" },
+        "bestFor": { "type": "array", "items": { "type": "string" } },
+        "avoidIf": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "offers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "marketplace", "affiliateUrl"],
+        "properties": {
+          "title": { "type": "string" },
+          "marketplace": { "type": "string" },
+          "originalUrl": { "type": "string" },
+          "affiliateUrl": { "type": "string" },
+          "currentPrice": { "type": "string" },
+          "regularPrice": { "type": "string" },
+          "coupon": { "type": "string" },
+          "label": { "type": "string" },
+          "seller": { "type": "string" },
+          "lastCheckedAt": { "type": "string" },
+          "priceStatus": {
+            "type": "string",
+            "enum": ["real", "simulated", "estimate", "expired"]
+          }
+        }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["heading", "body"],
+        "properties": {
+          "heading": { "type": "string" },
+          "body": { "type": "string" },
+          "items": { "type": "array", "items": { "type": "string" } },
+          "kind": {
+            "type": "string",
+            "enum": ["text", "pros-cons", "table", "ranking", "checklist", "faq", "offer", "ad"]
+          }
+        }
+      }
+    },
+    "comparisonTable": {
+      "type": "object",
+      "properties": {
+        "columns": { "type": "array", "items": { "type": "string" } },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "faq": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["question", "answer"],
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" }
+        }
+      }
+    },
+    "internalLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "url"],
+        "properties": {
+          "title": { "type": "string" },
+          "url": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "url"],
+        "properties": {
+          "name": { "type": "string" },
+          "url": { "type": "string" },
+          "note": { "type": "string" },
+          "checkedAt": { "type": "string" }
+        }
+      }
+    },
+    "creativeBrief": { "type": "string" },
+    "qualityChecklist": {
+      "type": "object",
+      "properties": {
+        "factChecked": { "type": "boolean" },
+        "proofread": { "type": "boolean" },
+        "mobileChecked": { "type": "boolean" },
+        "affiliateDisclosureIncluded": { "type": "boolean" },
+        "simulatedPricesOnlyInPreview": { "type": "boolean" }
+      }
+    }
+  }
+}

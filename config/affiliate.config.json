@@ -1,0 +1,55 @@
+{
+  "enabled": true,
+  "defaultRel": "sponsored nofollow",
+  "defaultDisclosure": "Este conteudo contem link de afiliado. Podemos receber comissao se voce comprar pelo link, sem custo adicional para voce.",
+  "manualFirst": true,
+  "marketplaces": [
+    {
+      "id": "amazon",
+      "name": "Amazon",
+      "enabled": true,
+      "tagOrPartnerId": "",
+      "notes": "Inserir links manualmente ate configurar regra oficial."
+    },
+    {
+      "id": "magalu",
+      "name": "Magalu",
+      "enabled": true,
+      "tagOrPartnerId": "",
+      "notes": "Inserir links manualmente."
+    },
+    {
+      "id": "mercado-livre",
+      "name": "Mercado Livre",
+      "enabled": true,
+      "tagOrPartnerId": "",
+      "notes": "Inserir links manualmente."
+    },
+    {
+      "id": "casas-bahia",
+      "name": "Casas Bahia",
+      "enabled": true,
+      "tagOrPartnerId": "",
+      "notes": "Inserir links manualmente."
+    },
+    {
+      "id": "kabum",
+      "name": "KaBuM",
+      "enabled": true,
+      "tagOrPartnerId": "",
+      "notes": "Inserir links manualmente."
+    }
+  ],
+  "fields": [
+    "originalUrl",
+    "affiliateUrl",
+    "marketplace",
+    "currentPrice",
+    "regularPrice",
+    "coupon",
+    "estimatedCommission",
+    "seller",
+    "shippingNote",
+    "lastCheckedAt"
+  ]
+}

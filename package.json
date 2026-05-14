@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "dev": "node server.js",
+    "generate": "node scripts/generate-posts.js",
+    "render": "node scripts/render-veredito.js",
+    "publish": "node scripts/render-veredito.js",
+    "sync:supabase": "node scripts/supabase-sync.js",
+    "check:supabase": "node scripts/supabase-check.js"
+  },
+  "devDependencies": {}
+}

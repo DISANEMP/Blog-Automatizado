@@ -1,0 +1,15 @@
+{
+  "currentMode": "static-local",
+  "recommendedInitialDeploy": "GitHub + Vercel ou Netlify",
+  "alternatives": [
+    "WordPress quando quiser CMS tradicional",
+    "Webflow quando quiser visual no-code premium",
+    "Next.js quando quiser automacao forte e controle total",
+    "Ghost quando quiser publicacao editorial limpa"
+  ],
+  "notes": [
+    "Hospedagem nao corrige mobile ruim sozinha.",
+    "Template responsivo deve ser resolvido no codigo ou no tema.",
+    "O fluxo atual prioriza paginas estaticas rapidas e publicacao semi-automatizada."
+  ]
+}

@@ -1,0 +1,971 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OLED, MiniLED ou QNED: qual TV comprar? | Veredito Tech</title>
+    <meta
+      name="description"
+      content="Entenda as diferenças entre OLED, MiniLED e QNED antes de comprar uma TV. Veja vantagens, limitações, preço ideal e qual tecnologia vale mais para cada uso."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f7fb;
+        --ink: #111827;
+        --muted: #657186;
+        --line: #dbe3ee;
+        --panel: #ffffff;
+        --brand: #0f766e;
+        --brand-dark: #0b5f59;
+        --blue: #1d4ed8;
+        --red: #be123c;
+        --yellow: #facc15;
+        --shadow: 0 22px 70px rgba(15, 23, 42, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .preview-note {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        padding: 9px 14px;
+        background: #111827;
+        color: #fff;
+        text-align: center;
+        font-size: 0.82rem;
+        font-weight: 850;
+      }
+
+      .site-header {
+        background:
+          radial-gradient(circle at 82% 14%, rgba(94, 234, 212, 0.22), transparent 30%),
+          linear-gradient(135deg, #08111f 0%, #142136 48%, #102f35 100%);
+        color: #fff;
+      }
+
+      .nav,
+      .hero,
+      .summary-strip,
+      .shell,
+      .footer {
+        width: min(1160px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .nav {
+        min-height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-weight: 950;
+      }
+
+      .logo-mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: linear-gradient(145deg, #5eead4, #0f766e);
+        color: #05201e;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 18px;
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 0.94rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+      }
+
+      .hero {
+        min-height: 68vh;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 430px;
+        gap: 42px;
+        align-items: center;
+        padding: 42px 0 56px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: #67e8f9;
+        font-size: 0.77rem;
+        font-weight: 950;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 860px;
+        font-size: clamp(2.25rem, 5.6vw, 4.9rem);
+        line-height: 0.98;
+      }
+
+      .hero p:not(.eyebrow) {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.08rem;
+        line-height: 1.65;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .btn,
+      .btn-light,
+      .btn-ghost {
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        padding: 0 16px;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .btn {
+        background: var(--brand);
+        color: #fff;
+      }
+
+      .btn-light {
+        background: #fff;
+        color: var(--brand-dark);
+      }
+
+      .btn-ghost {
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        color: #fff;
+      }
+
+      .visual-card {
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .tv-stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .tv-layer {
+        min-height: 104px;
+        border-radius: 12px;
+        padding: 16px;
+        display: grid;
+        align-content: end;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .tv-layer::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.62), transparent 18%),
+          radial-gradient(circle at 76% 24%, rgba(94, 234, 212, 0.5), transparent 24%),
+          radial-gradient(circle at 62% 80%, rgba(29, 78, 216, 0.44), transparent 28%);
+      }
+
+      .tv-layer strong,
+      .tv-layer span {
+        position: relative;
+        z-index: 1;
+      }
+
+      .tv-layer strong {
+        font-size: 1.45rem;
+      }
+
+      .tv-layer span {
+        color: rgba(255, 255, 255, 0.76);
+      }
+
+      .oled {
+        background: #050816;
+      }
+
+      .miniled {
+        background: #102542;
+      }
+
+      .qned {
+        background: #123f3d;
+      }
+
+      .summary-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        padding: 0 0 28px;
+      }
+
+      .summary-strip div {
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .summary-strip strong {
+        display: block;
+      }
+
+      .summary-strip span {
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 0.88rem;
+      }
+
+      .shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 330px;
+        gap: 22px;
+        padding: 28px 0 60px;
+      }
+
+      .article,
+      .rail-card,
+      .ad,
+      .offer-card {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+      }
+
+      .article {
+        padding: min(6vw, 46px);
+      }
+
+      .article p,
+      .article li,
+      .rail-card p,
+      .footer p {
+        color: #354154;
+        line-height: 1.76;
+        font-size: 1.02rem;
+      }
+
+      h2 {
+        margin: 34px 0 12px;
+        font-size: clamp(1.55rem, 3vw, 2.25rem);
+        line-height: 1.1;
+      }
+
+      h3 {
+        margin: 18px 0 8px;
+      }
+
+      .notice {
+        padding: 14px 16px;
+        border: 1px solid var(--yellow);
+        border-radius: 8px;
+        background: #fffbeb;
+        color: #4b3a09;
+        line-height: 1.55;
+      }
+
+      .answer {
+        margin: 24px 0;
+        padding: 18px;
+        border: 1px solid #67e8f9;
+        border-radius: 10px;
+        background: #ecfeff;
+      }
+
+      .answer strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #075985;
+      }
+
+      .ad {
+        min-height: 96px;
+        display: grid;
+        place-items: center;
+        margin: 22px 0;
+        padding: 14px;
+        border-style: dashed;
+        color: var(--muted);
+        text-align: center;
+        background: #fbfdff;
+      }
+
+      .ad small {
+        display: block;
+        color: #94a3b8;
+      }
+
+      .cards,
+      .pros-cons,
+      .decision-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 22px 0;
+      }
+
+      .pros-cons,
+      .decision-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card,
+      .box {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fbfdff;
+      }
+
+      .card span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
+      .card strong {
+        display: block;
+        margin-top: 5px;
+        font-size: 1.04rem;
+      }
+
+      .box.good {
+        border-color: #86efac;
+        background: #f0fdf4;
+      }
+
+      .box.warn {
+        border-color: #fecdd3;
+        background: #fff1f2;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+      }
+
+      table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 13px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #eef6ff;
+        color: #172554;
+      }
+
+      .offer-card {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 18px;
+        align-items: center;
+        margin: 28px 0;
+        padding: 18px;
+        background: linear-gradient(135deg, #f0fdf4, #ffffff);
+        border-color: #86efac;
+      }
+
+      .price {
+        margin: 6px 0;
+        color: var(--red);
+        font-size: 1.85rem;
+        font-weight: 950;
+        line-height: 1;
+      }
+
+      .coupon {
+        display: inline-flex;
+        min-height: 34px;
+        align-items: center;
+        padding: 0 10px;
+        border: 1px dashed var(--brand);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--brand-dark);
+        font-weight: 950;
+      }
+
+      .rail {
+        align-self: start;
+        position: sticky;
+        top: 48px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .rail-card {
+        padding: 17px;
+      }
+
+      .score {
+        display: block;
+        color: var(--blue);
+        font-size: 2.6rem;
+        font-weight: 950;
+        line-height: 1;
+      }
+
+      .mini-list {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .mini-list li {
+        display: flex;
+        gap: 8px;
+        font-size: 0.96rem;
+        line-height: 1.45;
+      }
+
+      .mini-list li::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        flex: 0 0 8px;
+        margin-top: 7px;
+        border-radius: 999px;
+        background: var(--brand);
+      }
+
+      .group-card {
+        background: #0f172a;
+        color: #fff;
+        border-color: #0f172a;
+      }
+
+      .group-card p {
+        color: rgba(255, 255, 255, 0.74);
+      }
+
+      .group-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .footer {
+        padding: 24px 0 42px;
+        border-top: 1px solid var(--line);
+      }
+
+      .source-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .source-links a {
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--brand-dark);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 850;
+      }
+
+      @media (max-width: 960px) {
+        .hero,
+        .shell {
+          grid-template-columns: 1fr;
+        }
+
+        .rail {
+          position: static;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .preview-note {
+          position: static;
+          font-size: 0.75rem;
+        }
+
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 12px;
+          min-height: 0;
+          padding: 14px 0;
+        }
+
+        .nav-links {
+          width: 100%;
+          overflow-x: auto;
+          padding-bottom: 4px;
+          gap: 12px;
+          scrollbar-width: none;
+          white-space: nowrap;
+        }
+
+        .hero {
+          min-height: auto;
+          gap: 24px;
+          padding: 24px 0 28px;
+        }
+
+        h1 {
+          font-size: clamp(2rem, 13vw, 3.2rem);
+          line-height: 1.02;
+        }
+
+        .hero p:not(.eyebrow) {
+          font-size: 1rem;
+          line-height: 1.58;
+        }
+
+        .hero-actions {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .btn,
+        .btn-light,
+        .btn-ghost {
+          width: 100%;
+          min-height: 48px;
+          text-align: center;
+        }
+
+        .visual-card {
+          padding: 10px;
+        }
+
+        .tv-layer {
+          min-height: 86px;
+        }
+
+        .summary-strip,
+        .cards,
+        .pros-cons,
+        .decision-grid,
+        .offer-card {
+          grid-template-columns: 1fr;
+        }
+
+        .article {
+          padding: 22px;
+        }
+
+        .article p,
+        .article li,
+        .rail-card p,
+        .footer p {
+          font-size: 0.98rem;
+          line-height: 1.68;
+        }
+
+        h2 {
+          font-size: 1.55rem;
+          line-height: 1.16;
+        }
+
+        .price {
+          font-size: 1.45rem;
+        }
+
+        table {
+          min-width: 620px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="preview-note">PREVIA HTML - artigo educativo para linkar reviews e guias de TVs</div>
+
+    <header class="site-header">
+      <nav class="nav" aria-label="Navegacao principal">
+        <a class="logo" href="#">
+          <span class="logo-mark">VT</span>
+          <span>Veredito Tech</span>
+        </a>
+        <div class="nav-links">
+          <a href="#resposta">Resposta</a>
+          <a href="#comparativo">Comparativo</a>
+          <a href="#comprar">Qual comprar</a>
+          <a href="#fontes">Fontes</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Guia de compra de TV</p>
+          <h1>OLED, MiniLED ou QNED: qual TV comprar?</h1>
+          <p>
+            Essas siglas aparecem em quase toda oferta de TV premium, mas não significam a mesma coisa. OLED prioriza
+            preto perfeito e contraste. MiniLED aposta em muito brilho e controle de luz. QNED combina pontos quânticos,
+            NanoCell e, em alguns modelos, MiniLED.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-light" href="#comparativo">Ver diferenças</a>
+            <a class="btn-ghost" href="#comprar">Ir para recomendação</a>
+          </div>
+        </div>
+
+        <div class="visual-card" aria-label="Comparativo visual entre OLED, MiniLED e QNED">
+          <div class="tv-stack">
+            <div class="tv-layer oled">
+              <strong>OLED</strong>
+              <span>pixels acendem individualmente</span>
+            </div>
+            <div class="tv-layer miniled">
+              <strong>MiniLED</strong>
+              <span>LCD com muitos LEDs pequenos no backlight</span>
+            </div>
+            <div class="tv-layer qned">
+              <strong>QNED</strong>
+              <span>Quantum Dot + NanoCell, com variações por linha</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="summary-strip">
+        <div>
+          <strong>Melhor preto</strong>
+          <span>OLED</span>
+        </div>
+        <div>
+          <strong>Mais brilho</strong>
+          <span>MiniLED premium</span>
+        </div>
+        <div>
+          <strong>Intermediária premium</strong>
+          <span>QNED</span>
+        </div>
+        <div>
+          <strong>Compra racional</strong>
+          <span>depende de uso e preço</span>
+        </div>
+      </section>
+    </header>
+
+    <main class="shell">
+      <article class="article">
+        <div class="notice">
+          <strong>Aviso:</strong>
+          este artigo é educativo e pode conter links de afiliado simulados. Antes de comprar, confirme preço, modelo,
+          taxa de atualização, tipo de painel e garantia na loja.
+        </div>
+
+        <section class="answer" id="resposta">
+          <strong>Resposta curta</strong>
+          Se você quer a melhor imagem para filmes em ambiente controlado, escolha OLED. Se quer muito brilho para sala
+          clara e telas grandes, olhe MiniLED. Se quer uma TV acima das UHD básicas, mas sem pagar sempre preço de OLED,
+          QNED pode fazer sentido, desde que o modelo e o preço estejam bons.
+        </section>
+
+        <div class="cards">
+          <div class="card">
+            <span>OLED</span>
+            <strong>melhor contraste</strong>
+          </div>
+          <div class="card">
+            <span>MiniLED</span>
+            <strong>brilho forte</strong>
+          </div>
+          <div class="card">
+            <span>QNED</span>
+            <strong>meio-termo premium</strong>
+          </div>
+        </div>
+
+        <div class="ad">
+          <strong>Publicidade</strong>
+          <small>Bloco AdSense simulado 728x90 - discreto, sem pop-up</small>
+        </div>
+
+        <h2>O que é OLED?</h2>
+        <p>
+          OLED é uma tecnologia em que cada pixel emite a própria luz. Isso permite desligar pixels individualmente,
+          criando preto realmente profundo e contraste muito alto. Na prática, filmes, séries e jogos com cenas escuras
+          costumam ficar mais impactantes.
+        </p>
+        <p>
+          O ponto de atenção é que TVs OLED geralmente custam mais e podem exigir mais cuidado em usos com elementos
+          fixos na tela por muitas horas, como placares, logos, painéis ou canais de notícia. Modelos atuais melhoraram
+          bastante nisso, mas o cuidado ainda faz parte da decisão.
+        </p>
+
+        <h2>O que é MiniLED?</h2>
+        <p>
+          MiniLED não é um tipo de painel como OLED. É uma forma mais avançada de iluminação traseira em TVs LCD/LED.
+          Em vez de poucos LEDs grandes, a TV usa muitos LEDs pequenos, divididos em zonas de escurecimento. Isso melhora
+          brilho, contraste e controle de luz.
+        </p>
+        <p>
+          Em geral, MiniLED é forte para salas claras, HDR com muito brilho e telas grandes. Mesmo assim, como ainda há
+          uma camada LCD, pode existir blooming: aquele brilho ao redor de objetos claros em fundo escuro.
+        </p>
+
+        <h2>O que é QNED?</h2>
+        <p>
+          QNED é uma nomenclatura usada pela LG para TVs que combinam Quantum Dot e NanoCell. Dependendo da linha, alguns
+          modelos também usam MiniLED. Por isso, QNED não deve ser entendido como uma qualidade única: uma QNED básica
+          pode ser bem diferente de uma QNED MiniLED premium.
+        </p>
+        <p>
+          A ideia é melhorar cor e experiência em relação a TVs UHD simples. Para compra, o mais importante é verificar
+          o modelo específico: tamanho, frequência nativa, tipo de iluminação, recursos gamer, brilho, entradas HDMI e
+          preço frente a OLED, MiniLED e UHD comum.
+        </p>
+
+        <section class="offer-card">
+          <div>
+            <p class="eyebrow" style="color: var(--brand)">Oferta simulada</p>
+            <h2 style="margin-top: 0">Compare TVs antes de comprar</h2>
+            <p class="price">Ver ofertas de OLED, MiniLED e QNED</p>
+            <span class="coupon">CUPOM: TVSMART</span>
+            <p>Link simulado no estilo “clique aqui”. Trocar pelo afiliado real antes de publicar.</p>
+          </div>
+          <a class="btn" href="https://example.com/ofertas-tvs-afiliado" rel="sponsored nofollow">
+            Clique aqui e veja as ofertas
+          </a>
+        </section>
+
+        <h2 id="comparativo">OLED vs MiniLED vs QNED: diferenças principais</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Critério</th>
+                <th>OLED</th>
+                <th>MiniLED</th>
+                <th>QNED</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Como funciona</td>
+                <td>Pixels emitem luz individualmente.</td>
+                <td>LCD com iluminação traseira de muitos LEDs pequenos.</td>
+                <td>Quantum Dot + NanoCell; alguns modelos usam MiniLED.</td>
+              </tr>
+              <tr>
+                <td>Preto e contraste</td>
+                <td>Excelente, preto perfeito.</td>
+                <td>Muito bom nos modelos premium, mas pode ter blooming.</td>
+                <td>Varia bastante conforme a linha e o backlight.</td>
+              </tr>
+              <tr>
+                <td>Brilho</td>
+                <td>Bom a excelente, dependendo do modelo.</td>
+                <td>Geralmente muito forte, ótimo para sala clara.</td>
+                <td>Intermediário a alto, conforme a versão.</td>
+              </tr>
+              <tr>
+                <td>Jogos</td>
+                <td>Ótimo em modelos 120 Hz com baixo tempo de resposta.</td>
+                <td>Ótimo se tiver 120 Hz, VRR e HDMI 2.1.</td>
+                <td>Depende do modelo; conferir 60 Hz ou 120 Hz.</td>
+              </tr>
+              <tr>
+                <td>Preço</td>
+                <td>Normalmente mais caro.</td>
+                <td>Varia, mas modelos bons podem ser caros.</td>
+                <td>Pode ser alternativa mais acessível no segmento premium.</td>
+              </tr>
+              <tr>
+                <td>Melhor para</td>
+                <td>Filmes, séries, jogos e quem quer imagem premium.</td>
+                <td>Salas claras, HDR brilhante, esportes e telas grandes.</td>
+                <td>Quem quer subir de nível sem pagar sempre por OLED.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="comprar">Qual comprar de acordo com o uso?</h2>
+        <div class="pros-cons">
+          <div class="box good">
+            <h3>Escolha OLED se...</h3>
+            <ul>
+              <li>você assiste muitos filmes e séries à noite;</li>
+              <li>quer preto profundo e contraste máximo;</li>
+              <li>joga bastante e encontrou modelo 120 Hz com HDMI 2.1;</li>
+              <li>aceita pagar mais por imagem premium.</li>
+            </ul>
+          </div>
+          <div class="box good">
+            <h3>Escolha MiniLED se...</h3>
+            <ul>
+              <li>sua sala é clara ou recebe muita luz;</li>
+              <li>você quer TV grande com HDR forte;</li>
+              <li>assiste esportes e conteúdos variados;</li>
+              <li>quer reduzir risco de retenção por uso intenso.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="decision-grid" style="margin-top: 12px">
+          <div class="box">
+            <h3>Escolha QNED se...</h3>
+            <p>
+              Você quer uma TV melhor que uma UHD básica, gosta do sistema LG/webOS e encontrou um preço competitivo.
+              Só confirme se o modelo é 60 Hz ou 120 Hz e se usa MiniLED ou iluminação mais simples.
+            </p>
+          </div>
+          <div class="box warn">
+            <h3>Não compre só pela sigla</h3>
+            <p>
+              OLED, MiniLED e QNED têm linhas diferentes. Uma OLED de entrada, uma MiniLED premium e uma QNED simples
+              podem ter propostas e preços completamente diferentes.
+            </p>
+          </div>
+        </div>
+
+        <div class="ad">
+          <strong>Publicidade</strong>
+          <small>Bloco AdSense simulado in-article 336x280</small>
+        </div>
+
+        <h2>Onde entra uma TV UHD comum?</h2>
+        <p>
+          TVs UHD comuns, como muitos modelos 4K de entrada ou intermediários, continuam fazendo sentido quando o foco
+          é tamanho e preço. Uma TV 75" UHD pode ser melhor compra que uma OLED menor se sua prioridade for impacto na
+          sala e uso familiar. Mas, em qualidade de imagem, OLED, MiniLED e boas QNED tendem a ser superiores.
+        </p>
+
+        <h2>Perguntas frequentes</h2>
+        <h3>OLED sempre é melhor que MiniLED?</h3>
+        <p>
+          Não sempre. OLED vence em preto e contraste, mas MiniLED pode vencer em brilho e uso em sala clara. A melhor
+          escolha depende do ambiente, conteúdo e preço.
+        </p>
+
+        <h3>QNED é a mesma coisa que OLED?</h3>
+        <p>
+          Não. OLED tem pixels que emitem luz própria. QNED é uma tecnologia LCD/LED com Quantum Dot e NanoCell, podendo
+          ou não usar MiniLED dependendo do modelo.
+        </p>
+
+        <h3>MiniLED pode ter burn-in?</h3>
+        <p>
+          MiniLED é baseado em LCD, então não tem o mesmo perfil de risco de retenção permanente associado ao OLED. Ainda
+          assim, qualquer TV deve ser usada conforme recomendações do fabricante.
+        </p>
+
+        <h3>Para PS5 e Xbox, qual é melhor?</h3>
+        <p>
+          Procure 120 Hz, VRR, ALLM e HDMI 2.1. Existem OLED, MiniLED e QNED boas para jogos, mas também existem modelos
+          60 Hz em todas as famílias. A ficha técnica manda mais que a sigla.
+        </p>
+
+        <h2>Conclusão</h2>
+        <p>
+          OLED é a escolha mais segura para quem quer imagem premium e contraste máximo. MiniLED é excelente para brilho,
+          sala clara e telas grandes. QNED pode ser uma alternativa interessante quando o preço está bom e o modelo tem
+          recursos acima das TVs UHD básicas. O veredito é simples: escolha pela sua sala, pelo seu uso e pelo preço real,
+          não apenas pela sigla na caixa.
+        </p>
+      </article>
+
+      <aside class="rail">
+        <section class="rail-card">
+          <span class="score">Guia</span>
+          <h3>Resumo Veredito</h3>
+          <p>OLED para contraste. MiniLED para brilho. QNED para alternativa premium intermediária.</p>
+        </section>
+
+        <section class="rail-card group-card">
+          <h3>Receba ofertas de TVs</h3>
+          <p>Canal simulado para alertas curtos: preço, cupom, frete e link verificado.</p>
+          <div class="group-actions">
+            <a class="btn-light" href="#">WhatsApp</a>
+            <a class="btn-light" href="#">Telegram</a>
+          </div>
+        </section>
+
+        <section class="rail-card">
+          <h3>Checklist rápido</h3>
+          <ul class="mini-list">
+            <li>confira se é 60 Hz ou 120 Hz;</li>
+            <li>veja quantas entradas HDMI 2.1 existem;</li>
+            <li>compare brilho e contraste em reviews;</li>
+            <li>meça a distância do sofá;</li>
+            <li>inclua frete e instalação no preço final.</li>
+          </ul>
+        </section>
+
+        <section class="rail-card">
+          <h3>Anúncio lateral</h3>
+          <div class="ad" style="margin: 0; min-height: 250px">
+            <strong>AdSense 300x250</strong>
+            <small>simulado</small>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="footer" id="fontes">
+      <p>
+        Fontes consultadas: RTINGS, Samsung, LG Brasil, LG US e materiais oficiais sobre OLED, Mini LED e QNED. Antes de
+        publicar, revisar links de afiliado e incluir links internos para reviews de TVs específicas.
+      </p>
+      <div class="source-links">
+        <a href="https://www.rtings.com/tv/learn/qled-vs-oled-vs-led">RTINGS</a>
+        <a href="https://www.samsung.com/us/tvs/tv-buying-guide/oled-vs-mini-led/">Samsung OLED vs Mini LED</a>
+        <a href="https://www.lg.com/us/discover/tvs/oled-vs-qned/">LG OLED vs QNED</a>
+        <a href="https://www.lg.com/br/tv-soundbars/qned/">LG QNED Brasil</a>
+      </div>
+    </footer>
+  </body>
+</html>

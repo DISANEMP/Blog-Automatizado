@@ -1,0 +1,24 @@
+{
+  "policy": {
+    "noAggressiveScraping": true,
+    "preferOfficialApis": true,
+    "manualResearchAllowed": true,
+    "userProvidedLinksAllowed": true,
+    "alwaysStoreLastCheckedAt": true,
+    "neverPublishUnverifiedPriceAsReal": true
+  },
+  "sourceTypes": [
+    "marketplace_page_informada_pelo_usuario",
+    "programa_afiliado",
+    "api_de_busca_configurada",
+    "feed_de_ofertas_autorizado",
+    "comparador_publico_com_link",
+    "pesquisa_manual_assistida"
+  ],
+  "priceLabels": {
+    "real": "Preco checado",
+    "simulated": "Preco simulado",
+    "estimate": "Faixa estimada",
+    "expired": "Oferta possivelmente encerrada"
+  }
+}

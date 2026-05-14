@@ -1,0 +1,30 @@
+{
+  "goal": "Aumentar elegibilidade e atratividade para Google Discover sem prometer resultado garantido.",
+  "mustHave": [
+    "conteudo people-first",
+    "titulo interessante sem clickbait",
+    "imagem principal grande com pelo menos 1200px quando possivel",
+    "meta robots com max-image-preview:large",
+    "autoria clara",
+    "fontes e processo editorial",
+    "mobile excelente",
+    "pagina rapida",
+    "tema oportuno ou util para decisao de compra"
+  ],
+  "avoid": [
+    "titulo enganoso",
+    "falsa urgencia",
+    "conteudo generico sem valor proprio",
+    "imagem aleatoria sem relacao",
+    "publicar preco simulado como real",
+    "excesso de anuncios",
+    "conteudo massivo sem revisao"
+  ],
+  "headlinePatterns": [
+    "Vale comprar agora?",
+    "O detalhe que muda a compra",
+    "Preco bom ou armadilha?",
+    "Antes de comprar, veja isso",
+    "Quando vale esperar e quando clicar"
+  ]
+}
