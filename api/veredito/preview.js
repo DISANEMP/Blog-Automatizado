@@ -38,7 +38,7 @@ module.exports = async function handler(req, res) {
       article: row.content_json,
       record: row,
       html,
-      previewUrl: null,
+      previewUrl: `/rascunho/${row.slug}`,
       note: "Preview salvo como rascunho no Supabase."
     });
   } catch (error) {

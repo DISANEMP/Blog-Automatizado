@@ -1,9 +1,6 @@
 const form = document.querySelector("#briefingForm");
 const jsonEditor = document.querySelector("#jsonEditor");
 const statusBadge = document.querySelector("#statusBadge");
-const previewFrame = document.querySelector("#previewFrame");
-const openPreview = document.querySelector("#openPreview");
-const generatePreview = document.querySelector("#generatePreview");
 const publishArticle = document.querySelector("#publishArticle");
 const saveDraft = document.querySelector("#saveDraft");
 const fillExample = document.querySelector("#fillExample");
@@ -18,9 +15,10 @@ const sourceUrl = document.querySelector("#sourceUrl");
 const sourceAffiliateUrl = document.querySelector("#sourceAffiliateUrl");
 const sourceAngle = document.querySelector("#sourceAngle");
 const researchStatus = document.querySelector("#researchStatus");
+const currentDraft = document.querySelector("#currentDraft");
+const generatePreview = document.querySelector("#generatePreview");
 
 let currentArticle = null;
-let currentObjectUrl = null;
 
 function setStatus(message) {
   statusBadge.textContent = message;
@@ -42,13 +40,6 @@ function splitList(value) {
     .filter(Boolean);
 }
 
-function splitComma(value) {
-  return String(value || "")
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
 function formData() {
   return Object.fromEntries(new FormData(form).entries());
 }
@@ -64,114 +55,76 @@ function sourceObjects(value) {
 
 function buildLocalArticle(input) {
   const product = input.product || input.title || "Produto exemplo";
-  const category = input.category || "Tecnologia";
-  const goodPrice = input.goodPrice || "quando o preco final estiver abaixo dos concorrentes diretos";
-  const audience = input.audience || "quem quer comprar melhor sem cair no impulso";
-  const angle = input.angle || "vale comprar agora?";
-  const pros = splitList(input.pros);
-  const cons = splitList(input.cons);
-  const competitors = splitComma(input.competitors);
   const title = input.title || `${product} vale a pena?`;
-  const today = new Date().toISOString().slice(0, 10);
-  const currentPrice = input.currentPrice || "Ver preco atual";
-  const marketplace = input.marketplace || "Marketplace";
+  const goodPrice = input.goodPrice || "quando o preco final fizer sentido";
 
   return {
     type: input.type || "review",
     status: "draft",
     title,
     slug: slugify(title),
-    category,
+    category: input.category || "Tecnologia",
     metaDescription: `${title}: veja veredito honesto, preco ideal, pontos fortes, limites e se vale comprar agora.`.slice(0, 165),
-    excerpt: `Analise direta sobre ${product}, com preco ideal, pontos de atencao e recomendacao honesta antes de comprar.`,
+    excerpt: `Analise direta sobre ${product}, com recomendacao honesta antes de comprar.`,
     author: "Equipe Veredito Tech",
     hero: {
-      eyebrow: input.type === "deal" ? "Oferta com veredito" : "Review honesto antes de comprar",
-      subtitle: `O ponto e simples: ${product} pode fazer sentido para ${audience}, mas a decisao depende de preco final, loja confiavel e uso real. ${angle}`,
+      eyebrow: "Review honesto antes de comprar",
+      subtitle: `${product} pode fazer sentido, mas o preco final manda. Vamos olhar uso real, loja, garantia e alternativas antes do clique.`,
       primaryCta: "Clique aqui para ver a oferta",
       secondaryCta: "Ler veredito",
-      visualType: input.imageUrl ? "product-image" : "css-illustration",
       imageUrl: input.imageUrl || "",
       imageAlt: product
     },
     shortAnswer: {
       label: "Resposta curta",
-      text: `Vale considerar ${product} se ele estiver ${goodPrice} e se os pontos fortes combinarem com o seu uso. Se a oferta depender de cupom, frete caro ou vendedor duvidoso, calma: preco bonito sem contexto nao paga boleto nem evita dor de cabeca.`
+      text: `Vale considerar se estiver ${goodPrice}. Se o preco estiver normal, compare antes.`
     },
     summaryCards: [
-      { label: "Melhor para", value: audience },
+      { label: "Melhor para", value: input.audience || "quem quer comprar melhor sem impulso" },
       { label: "Preco bom", value: goodPrice },
-      { label: "Atencao", value: cons[0] || "confirmar preco, frete e vendedor" },
-      { label: "Veredito", value: "comprar so se o preco final fechar a conta" }
+      { label: "Atencao", value: "confirmar preco, frete e vendedor" },
+      { label: "Veredito", value: "comprar so se fechar a conta" }
     ],
     verdict: {
-      score: "8,2",
-      summary: `${product} entra como boa compra quando preco, loja e uso real se encontram. Sem isso, e melhor comparar antes de clicar.`,
-      bestFor: [audience, ...pros.slice(0, 2)],
-      avoidIf: cons.length ? cons : ["o preco estiver perto de modelos superiores"]
+      score: "8,0",
+      summary: `${product} so vira boa compra quando preco, uso e loja confiavel se encontram.`,
+      bestFor: [input.audience || "quem quer comprar melhor"],
+      avoidIf: ["o preco estiver perto de modelos superiores"]
     },
     offers: [
       {
         title: product,
-        marketplace,
+        marketplace: input.marketplace || "Marketplace",
         originalUrl: input.originalUrl || "",
         affiliateUrl: input.affiliateUrl || "#",
-        currentPrice,
+        currentPrice: input.currentPrice || "Ver preco atual",
         regularPrice: input.regularPrice || "",
-        coupon: input.coupon || "",
-        label: input.currentPrice ? "Preco checado manualmente" : "Oferta simulada",
-        seller: marketplace,
-        lastCheckedAt: today,
-        priceStatus: input.currentPrice ? "real" : "simulated"
+        label: input.currentPrice ? "Preco checado manualmente" : "Preco para checar",
+        seller: input.marketplace || "Marketplace",
+        lastCheckedAt: new Date().toISOString().slice(0, 10),
+        priceStatus: input.currentPrice ? "real" : "estimate"
       }
     ],
     sections: [
-      {
-        heading: "Veredito rapido",
-        body: `${product} e uma compra para analisar com cabeca fria. Se estiver ${goodPrice}, a conversa melhora. Se estiver caro, compare com alternativas proximas.`
-      },
-      {
-        heading: "Para quem vale a pena",
-        body: `Vale para ${audience}. Tambem combina com quem prefere decidir com base em preco final, garantia e utilidade pratica.`,
-        items: pros.length ? pros : ["quem encontrou preco competitivo", "quem vai usar os recursos principais", "quem comprou de loja confiavel"]
-      },
-      {
-        heading: "Para quem nao vale a pena",
-        body: "Nao vale comprar no impulso. Se um concorrente entregar mais por pouca diferenca, o melhor clique pode ser o de voltar e comparar.",
-        items: cons.length ? cons : ["quem precisa do melhor desempenho absoluto", "quem encontrou concorrente melhor", "quem depende de frete muito caro"]
-      },
-      {
-        heading: "O que conferir antes de comprar",
-        body: "O preco final manda. Confira cupom no carrinho, frete, prazo, vendedor, garantia, versao exata do produto e politica de troca."
-      },
-      {
-        heading: "Preco ideal",
-        body: `A compra comeca a ficar interessante ${goodPrice}. Acima disso, vale comparar com ${competitors.length ? competitors.join(", ") : "concorrentes diretos da mesma faixa"}.`
-      }
+      { heading: "Veredito rapido", body: `${product} precisa ser analisado com calma. Se o preco final fizer sentido, ai a conversa muda.` },
+      { heading: "Para quem vale a pena", body: input.audience || "Vale para quem quer comprar com mais contexto e menos impulso." },
+      { heading: "O que conferir antes de comprar", body: "Confira preco final, frete, prazo, vendedor, garantia, versao exata e politica de troca." }
     ],
     comparisonTable: {
       columns: ["Opcao", "Melhor para", "Ponto forte", "Atencao"],
-      rows: [
-        [product, audience, pros[0] || "bom pacote geral", cons[0] || "confirmar preco final"],
-        ...(competitors.length
-          ? competitors.slice(0, 4).map((item) => [item, "comparar antes de decidir", "pode aparecer com preco melhor", "verificar ficha e garantia"])
-          : [["Concorrente direto", "quem quer comparar preco", "pode ter melhor custo-beneficio", "depende da oferta do dia"]])
-      ]
+      rows: [[product, "uso geral", "avaliar oferta", "confirmar preco final"]]
     },
     faq: [
-      { question: `${product} vale a pena?`, answer: `Vale se estiver ${goodPrice} e se os limites nao atrapalharem seu uso.` },
-      { question: "Quando comprar?", answer: "Quando preco, frete, cupom, vendedor e garantia fizerem sentido juntos." },
-      { question: "O link e afiliado?", answer: "Sim, o post pode usar link de afiliado sem custo adicional para voce." }
+      { question: `${product} vale a pena?`, answer: `Depende do preco final e do seu uso. ${goodPrice}.` }
     ],
     internalLinks: [],
     sources: sourceObjects(input.sources),
-    creativeBrief: `Criar visual limpo e premium para ${product}, com foco em preco final, veredito e comparacao honesta.`,
+    creativeBrief: `Criar visual limpo para ${product}, com foco em preco final e veredito.`,
     qualityChecklist: {
       factChecked: false,
       proofread: true,
       mobileChecked: true,
-      affiliateDisclosureIncluded: true,
-      simulatedPricesOnlyInPreview: !input.currentPrice
+      affiliateDisclosureIncluded: true
     }
   };
 }
@@ -186,7 +139,7 @@ async function requestJson(path, options = {}) {
   return data;
 }
 
-async function postJson(path, payload) {
+function postJson(path, payload) {
   return requestJson(path, {
     method: "POST",
     body: JSON.stringify(payload)
@@ -197,35 +150,44 @@ function getArticleFromEditor() {
   try {
     return JSON.parse(jsonEditor.value);
   } catch {
-    throw new Error("JSON invalido. Formate ou gere novamente.");
+    throw new Error("JSON invalido. Chama o Codex ou gere de novo.");
   }
 }
 
 function putArticle(article) {
   currentArticle = article;
   jsonEditor.value = JSON.stringify(article, null, 2);
+  renderCurrentDraft(article);
 }
 
-function showRenderedResult(result, fallbackUrl) {
-  if (currentObjectUrl) URL.revokeObjectURL(currentObjectUrl);
+function draftUrl(article) {
+  return `/rascunho/${article.slug}`;
+}
 
-  if (result.html) {
-    previewFrame.removeAttribute("src");
-    previewFrame.srcdoc = result.html;
-    currentObjectUrl = URL.createObjectURL(new Blob([result.html], { type: "text/html" }));
-    openPreview.href = currentObjectUrl;
+function publicUrl(article) {
+  return `/p/${article.slug}`;
+}
+
+function renderCurrentDraft(article) {
+  if (!article?.slug) {
+    currentDraft.hidden = true;
     return;
   }
-
-  if (fallbackUrl) {
-    previewFrame.removeAttribute("srcdoc");
-    previewFrame.src = `${fallbackUrl}?t=${Date.now()}`;
-    openPreview.href = fallbackUrl;
-  }
+  currentDraft.hidden = false;
+  const isPublished = article.status === "published";
+  const url = isPublished ? publicUrl(article) : draftUrl(article);
+  currentDraft.innerHTML = `
+    <h3>${escapeHtml(article.title)}</h3>
+    <p>${escapeHtml(article.category || "Tecnologia")} | ${isPublished ? "publicado" : "rascunho"} | ${escapeHtml(article.slug)}</p>
+    <div class="current-actions">
+      <a class="link-button" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>
+      ${isPublished ? "" : `<button type="button" class="danger" data-publish-current="${escapeHtml(article.slug)}">Publicar</button>`}
+      <button type="button" class="secondary" data-delete-current="${escapeHtml(article.slug)}">Apagar</button>
+    </div>`;
 }
 
 async function refreshList() {
-  setStatus("Carregando publicacoes...");
+  setStatus("Carregando...");
   try {
     const data = await requestJson("/api/veredito/drafts");
     const articles = data.articles || [];
@@ -233,25 +195,27 @@ async function refreshList() {
     publishedCount.textContent = articles.filter((item) => item.status === "published").length;
     articleList.innerHTML = articles.length
       ? articles.map(renderArticleItem).join("")
-      : "<p>Nenhuma publicacao ainda. Gere o primeiro rascunho acima.</p>";
-    setStatus("Lista atualizada");
+      : "<p>Nenhum rascunho ainda. Cole um link acima e gere o primeiro.</p>";
+    setStatus("Pronto");
   } catch (error) {
     articleList.innerHTML = `<p>${error.message}</p>`;
-    setStatus("Configure Supabase");
+    setStatus("Erro");
   }
 }
 
 function renderArticleItem(item) {
-  const publicUrl = item.status === "published" ? `/p/${item.slug}` : "";
+  const isPublished = item.status === "published";
+  const url = isPublished ? `/p/${item.slug}` : `/rascunho/${item.slug}`;
   return `
     <div class="article-item">
       <div>
         <h3>${escapeHtml(item.title)}</h3>
-        <p>${escapeHtml(item.category || "Tecnologia")} | ${escapeHtml(item.status)} | ${escapeHtml(item.slug)}</p>
+        <p>${escapeHtml(item.category || "Tecnologia")} | ${isPublished ? "publicado" : "rascunho"}</p>
       </div>
       <div class="article-actions">
-        <button type="button" class="secondary" data-load="${escapeHtml(item.slug)}">Editar</button>
-        ${publicUrl ? `<a class="link-button" href="${publicUrl}" target="_blank">Abrir post</a>` : ""}
+        <a class="link-button" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>
+        <button type="button" class="secondary" data-load="${escapeHtml(item.slug)}">Carregar</button>
+        ${isPublished ? "" : `<button type="button" class="danger" data-publish="${escapeHtml(item.slug)}">Publicar</button>`}
         <button type="button" class="secondary" data-delete="${escapeHtml(item.slug)}">Apagar</button>
       </div>
     </div>`;
@@ -266,24 +230,78 @@ function escapeHtml(value) {
 }
 
 async function loadArticle(slug) {
-  setStatus("Carregando artigo...");
+  setStatus("Carregando...");
   const data = await requestJson(`/api/veredito/article?slug=${encodeURIComponent(slug)}`);
   putArticle(data.article);
-  const preview = await postJson("/api/veredito/preview", { article: data.article });
-  showRenderedResult(preview, preview.previewUrl);
-  setStatus("Artigo carregado");
+  setStatus("Rascunho carregado");
 }
+
+async function publishSlug(slug) {
+  setStatus("Publicando...");
+  const result = await postJson("/api/veredito/publish-slug", { slug });
+  putArticle(result.article);
+  await refreshList();
+  window.open(result.postUrl, "_blank");
+  setStatus("Publicado");
+}
+
+async function deleteSlug(slug) {
+  if (!window.confirm(`Apagar "${slug}"?`)) return;
+  setStatus("Apagando...");
+  await postJson("/api/veredito/delete", { slug });
+  if (currentArticle?.slug === slug) {
+    currentArticle = null;
+    jsonEditor.value = "";
+    currentDraft.hidden = true;
+  }
+  await refreshList();
+  setStatus("Apagado");
+}
+
+generateFromUrl.addEventListener("click", async () => {
+  const url = sourceUrl.value.trim();
+  if (!url) {
+    setStatus("Cole um link");
+    sourceUrl.focus();
+    return;
+  }
+
+  const previewTab = window.open("about:blank", "_blank");
+  if (previewTab) {
+    previewTab.document.write("<p style='font-family:system-ui;padding:24px'>Gerando rascunho...</p>");
+  }
+
+  setStatus("Gerando...");
+  researchStatus.textContent = "Lendo o link e montando o rascunho. Se o site bloquear, eu ainda tento criar uma previa segura.";
+
+  try {
+    const result = await postJson("/api/veredito/generate-from-url", {
+      url,
+      affiliateUrl: sourceAffiliateUrl.value.trim(),
+      angle: sourceAngle.value.trim()
+    });
+    providerStatus.textContent = result.provider || "online";
+    putArticle(result.article);
+    await refreshList();
+    const urlToOpen = draftUrl(result.article);
+    if (previewTab) previewTab.location.href = urlToOpen;
+    researchStatus.textContent = "Rascunho pronto. Revise a aba que abriu antes de publicar.";
+    setStatus("Rascunho pronto");
+  } catch (error) {
+    if (previewTab) previewTab.close();
+    researchStatus.textContent = "Nao consegui gerar com esse link agora. Tente outro site/produto para testar.";
+    setStatus(error.message);
+  }
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  setStatus("Gerando com o motor editorial...");
+  setStatus("Gerando...");
   try {
     const result = await postJson("/api/veredito/generate", { brief: formData() });
-    providerStatus.textContent = result.provider || "ok";
     putArticle(result.article);
-    const preview = await postJson("/api/veredito/preview", { article: result.article });
-    showRenderedResult(preview, preview.previewUrl);
     await refreshList();
+    window.open(draftUrl(result.article), "_blank");
     setStatus("Rascunho gerado");
   } catch (error) {
     const article = buildLocalArticle(formData());
@@ -292,42 +310,12 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-generateFromUrl.addEventListener("click", async () => {
-  const url = sourceUrl.value.trim();
-  if (!url) {
-    setStatus("Cole um link primeiro");
-    sourceUrl.focus();
-    return;
-  }
-
-  setStatus("Lendo link e pesquisando...");
-    researchStatus.textContent = "Lendo o link e montando a previa. Se o site bloquear a leitura, ainda tento criar um rascunho seguro para teste.";
-  try {
-    const result = await postJson("/api/veredito/generate-from-url", {
-      url,
-      affiliateUrl: sourceAffiliateUrl.value.trim(),
-      angle: sourceAngle.value.trim()
-    });
-    providerStatus.textContent = result.provider || "ok";
-    putArticle(result.article);
-    researchStatus.textContent = `Extraido: ${result.extracted?.productName || result.extracted?.title || "produto"} | Fontes extras: ${result.searchSources?.length || 0}`;
-    const preview = await postJson("/api/veredito/preview", { article: result.article });
-    showRenderedResult(preview, preview.previewUrl);
-    await refreshList();
-    setStatus("Rascunho automatico pronto");
-  } catch (error) {
-    researchStatus.textContent = "Nao consegui ler esse link agora. Tente outro site/produto para testar.";
-    setStatus(error.message);
-  }
-});
-
 saveDraft.addEventListener("click", async () => {
-  setStatus("Salvando rascunho...");
+  setStatus("Salvando...");
   try {
     const article = getArticleFromEditor();
     const result = await postJson("/api/veredito/preview", { article });
     putArticle(result.article);
-    showRenderedResult(result, result.previewUrl);
     await refreshList();
     setStatus("Rascunho salvo");
   } catch (error) {
@@ -336,28 +324,24 @@ saveDraft.addEventListener("click", async () => {
 });
 
 generatePreview.addEventListener("click", async () => {
-  setStatus("Gerando preview...");
   try {
     const article = getArticleFromEditor();
     const result = await postJson("/api/veredito/preview", { article });
     putArticle(result.article);
-    showRenderedResult(result, result.previewUrl);
-    setStatus("Preview pronto");
+    window.open(result.previewUrl || draftUrl(result.article), "_blank");
+    setStatus("Rascunho aberto");
   } catch (error) {
     setStatus(error.message);
   }
 });
 
 publishArticle.addEventListener("click", async () => {
-  if (!window.confirm("Aprovar e publicar este artigo agora? Confira preco, link afiliado, imagem e fontes antes.")) return;
-  setStatus("Publicando...");
   try {
     const article = getArticleFromEditor();
     const result = await postJson("/api/veredito/publish", { article });
     putArticle(result.article);
-    showRenderedResult(result, result.postUrl);
-    if (result.postUrl) openPreview.href = result.postUrl;
     await refreshList();
+    window.open(result.postUrl, "_blank");
     setStatus("Publicado");
   } catch (error) {
     setStatus(error.message);
@@ -378,62 +362,28 @@ refreshDrafts.addEventListener("click", refreshList);
 articleList.addEventListener("click", (event) => {
   const loadButton = event.target.closest("[data-load]");
   const deleteButton = event.target.closest("[data-delete]");
-  if (loadButton) {
-    loadArticle(loadButton.dataset.load).catch((error) => setStatus(error.message));
-    return;
-  }
-  if (deleteButton) {
-    const slug = deleteButton.dataset.delete;
-    if (!window.confirm(`Apagar "${slug}" do Supabase?`)) return;
-    setStatus("Apagando...");
-    postJson("/api/veredito/delete", { slug })
-      .then(refreshList)
-      .then(() => setStatus("Apagado"))
-      .catch((error) => setStatus(error.message));
-  }
+  const publishButton = event.target.closest("[data-publish]");
+  if (loadButton) loadArticle(loadButton.dataset.load).catch((error) => setStatus(error.message));
+  if (deleteButton) deleteSlug(deleteButton.dataset.delete).catch((error) => setStatus(error.message));
+  if (publishButton) publishSlug(publishButton.dataset.publish).catch((error) => setStatus(error.message));
+});
+
+currentDraft.addEventListener("click", (event) => {
+  const deleteButton = event.target.closest("[data-delete-current]");
+  const publishButton = event.target.closest("[data-publish-current]");
+  if (deleteButton) deleteSlug(deleteButton.dataset.deleteCurrent).catch((error) => setStatus(error.message));
+  if (publishButton) publishSlug(publishButton.dataset.publishCurrent).catch((error) => setStatus(error.message));
 });
 
 fillExample.addEventListener("click", () => {
-  const values = {
-    type: "review",
-    category: "TVs",
-    title: "Smart TV LG 75UA8550PSA vale a pena?",
-    product: "Smart TV LG 75UA8550PSA",
-    angle: "vale comprar agora ou esperar uma QNED baixar?",
-    audience: "quem quer uma TV gigante para sala, streaming e futebol sem pagar preco de OLED",
-    goodPrice: "abaixo de R$ 4.700",
-    marketplace: "Casas Bahia",
-    currentPrice: "R$ 4.274,05",
-    regularPrice: "R$ 5.099,00",
-    coupon: "TV75OFERTA",
-    affiliateUrl: "https://example.com/casas-bahia-lg-75-afiliado",
-    imageUrl: "",
-    competitors: "Samsung Crystal 75, TCL C655 75, LG QNED 75",
-    pros: "tela grande; webOS; bom preco para 75 polegadas; controle Smart Magic",
-    cons: "painel 60 Hz; audio simples; frete pode pesar; nao e OLED nem MiniLED",
-    sources: "https://www.lg.com/br/\nhttps://www.casasbahia.com.br/"
-  };
-  sourceUrl.value = "https://www.casasbahia.com.br/smart-tv-75-lg-4k-uhd-75ua8550psa-processador-a7-gen8-webos-25-bluetooth/p/55070130";
-  sourceAffiliateUrl.value = values.affiliateUrl;
-  sourceAngle.value = values.angle;
-  for (const [key, value] of Object.entries(values)) {
-    const field = form.elements[key];
-    if (field) field.value = value;
-  }
-  putArticle(buildLocalArticle(values));
-  setStatus("Exemplo carregado");
+  sourceUrl.value = "https://www.apple.com/br/macbook-neo/";
+  sourceAffiliateUrl.value = "";
+  sourceAngle.value = "vale a pena ou e melhor comparar com MacBook Air?";
+  sourceUrl.focus();
+  setStatus("Exemplo pronto");
 });
 
 async function boot() {
-  putArticle(buildLocalArticle({
-    type: "review",
-    category: "Tecnologia",
-    title: "Exemplo Veredito Tech",
-    product: "Produto exemplo",
-    angle: "vale comprar agora?",
-    audience: "quem quer comprar melhor sem cair no impulso",
-    goodPrice: "quando o preco final fizer sentido"
-  }));
   try {
     const config = await requestJson("/api/veredito/config");
     providerStatus.textContent = config?.site?.brand?.name ? "online" : "online";

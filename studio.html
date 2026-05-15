@@ -10,23 +10,21 @@
     <aside class="sidebar">
       <a class="logo" href="studio.html"><span>VT</span> Veredito Studio</a>
       <nav>
-        <a href="#briefing">Gerar</a>
-        <a href="#library">Publicacoes</a>
-        <a href="#editor">Editor</a>
-        <a href="#preview">Preview</a>
-        <a href="index.html" target="_blank">Blog</a>
+        <a href="#novo">Novo rascunho</a>
+        <a href="#rascunhos">Rascunhos</a>
+        <a href="index.html" target="_blank">Abrir blog</a>
       </nav>
       <div class="mini-status">
-        <strong>Fluxo certo</strong>
-        <span>Briefing -> IA/template -> rascunho -> preview -> aprovar -> URL publica.</span>
+        <strong>Como usar</strong>
+        <span>Cole um link, gere o rascunho, abra em outra aba, revise e publique quando fizer sentido.</span>
       </div>
     </aside>
 
     <main class="workspace">
       <header class="topbar">
         <div>
-          <p class="eyebrow">Painel de publicacao</p>
-          <h1>Gerar, revisar, aprovar e publicar posts de afiliado</h1>
+          <p class="eyebrow">Blog automatizado</p>
+          <h1>Cole um link. Gere o rascunho. Abra e aprove.</h1>
         </div>
         <span id="statusBadge">Pronto</span>
       </header>
@@ -41,157 +39,97 @@
           <span>publicados</span>
         </div>
         <div>
-          <strong id="providerStatus">verificando</strong>
-          <span>gerador</span>
+          <strong id="providerStatus">online</strong>
+          <span>motor IA</span>
         </div>
       </section>
 
-      <section class="panel" id="briefing">
+      <section class="panel hero-panel" id="novo">
         <div class="panel-heading">
           <div>
-            <h2>Novo post automatico</h2>
-            <p>Cole o link da oferta ou produto. O Studio tenta ler a pagina, puxar imagem, pesquisar contexto, escrever na persona e salvar como rascunho.</p>
+            <h2>Novo rascunho por link</h2>
+            <p>Por enquanto, para testar, cole o link de um site ou produto. A ferramenta monta um rascunho e abre a previa em outra aba.</p>
           </div>
-          <button id="fillExample" type="button" class="secondary">Exemplo</button>
+          <button id="fillExample" type="button" class="secondary">Testar exemplo</button>
         </div>
 
         <section class="url-generator" aria-label="Gerador automatico por URL">
-          <label>
-            Link do produto/oferta
-            <input id="sourceUrl" name="sourceUrl" placeholder="https://www.casasbahia.com.br/produto..." />
+          <label class="wide-url">
+            Link do site ou produto
+            <input id="sourceUrl" name="sourceUrl" placeholder="Cole aqui o link que voce quer transformar em post" />
           </label>
           <label>
-            Link afiliado, se ja tiver
-            <input id="sourceAffiliateUrl" name="sourceAffiliateUrl" placeholder="se vazio, usa o proprio link como rascunho" />
+            Link afiliado, se tiver
+            <input id="sourceAffiliateUrl" name="sourceAffiliateUrl" placeholder="opcional" />
           </label>
           <label>
-            Angulo do post
+            Angulo
             <input id="sourceAngle" name="sourceAngle" value="vale comprar agora ou esperar?" />
           </label>
-          <button id="generateFromUrl" type="button">Colar link e gerar post</button>
-          <p id="researchStatus">Cole o link do site ou produto para testar. O Studio vai tentar montar uma previa antes de publicar.</p>
+          <button id="generateFromUrl" type="button">Gerar rascunho</button>
+          <p id="researchStatus">Depois de gerar, use o botao "Abrir rascunho" para ver como ficaria antes de publicar.</p>
         </section>
 
-        <form id="briefingForm" class="form-grid">
-          <details class="wide">
-            <summary>Campos avancados/manual</summary>
-            <div class="form-grid nested-form">
-          <label>
-            Tipo
-            <select name="type">
-              <option value="review">Review</option>
-              <option value="comparison">Comparativo</option>
-              <option value="guide">Guia</option>
-              <option value="ranking">Ranking</option>
-              <option value="deal">Oferta</option>
-            </select>
-          </label>
-          <label>
-            Categoria
-            <input name="category" value="Tecnologia" />
-          </label>
-          <label class="wide">
-            Titulo
-            <input name="title" required placeholder="Smart TV LG 75UA8550PSA vale a pena?" />
-          </label>
-          <label>
-            Produto ou tema
-            <input name="product" placeholder="Smart TV LG 75UA8550PSA" />
-          </label>
-          <label>
-            Angulo editorial
-            <input name="angle" placeholder="vale comprar agora ou esperar promocao?" />
-          </label>
-          <label class="wide">
-            Publico ideal
-            <input name="audience" placeholder="quem quer tela grande para sala, streaming e futebol sem pagar OLED" />
-          </label>
-          <label>
-            Preco bom
-            <input name="goodPrice" placeholder="abaixo de R$ 4.700" />
-          </label>
-          <label>
-            Marketplace
-            <input name="marketplace" placeholder="Casas Bahia, Amazon, Magalu..." />
-          </label>
-          <label>
-            Preco atual
-            <input name="currentPrice" placeholder="R$ 4.274,05" />
-          </label>
-          <label>
-            Preco normal
-            <input name="regularPrice" placeholder="R$ 5.099,00" />
-          </label>
-          <label>
-            Cupom
-            <input name="coupon" placeholder="TV75OFERTA" />
-          </label>
-          <label>
-            Link afiliado
-            <input name="affiliateUrl" placeholder="https://..." />
-          </label>
-          <label class="wide">
-            Imagem autorizada
-            <input name="imageUrl" placeholder="https://imagem-do-anuncio-ou-oficial.jpg" />
-          </label>
-          <label class="wide">
-            Concorrentes
-            <input name="competitors" placeholder="Samsung Crystal 75, TCL C655, LG QNED 75" />
-          </label>
-          <label class="wide">
-            Pontos fortes
-            <textarea name="pros" placeholder="tela grande; sistema bom; preco competitivo; controle inteligente"></textarea>
-          </label>
-          <label class="wide">
-            Pontos de atencao
-            <textarea name="cons" placeholder="60 Hz; audio simples; frete pode pesar; verificar vendedor"></textarea>
-          </label>
-          <label class="wide">
-            Fontes, uma por linha
-            <textarea name="sources" placeholder="https://www.lg.com/br/...&#10;https://www.casasbahia.com.br/..."></textarea>
-          </label>
-          <div class="actions wide">
-            <button type="submit">Gerar e salvar rascunho</button>
-            <button type="button" id="saveDraft" class="secondary">Salvar edicao</button>
-            <button type="button" id="generatePreview" class="secondary">Gerar preview</button>
-            <button type="button" id="publishArticle" class="danger">Aprovar e publicar</button>
-          </div>
-            </div>
-          </details>
-        </form>
+        <div id="currentDraft" class="current-draft" hidden></div>
       </section>
 
-      <section class="panel" id="library">
+      <section class="panel" id="rascunhos">
         <div class="panel-heading">
           <div>
-            <h2>Publicacoes</h2>
-            <p>Rascunhos e posts publicados salvos no Supabase.</p>
+            <h2>Rascunhos e publicados</h2>
+            <p>Cada card abre em uma aba separada. Voce nao precisa mexer em HTML ou JSON.</p>
           </div>
-          <button id="refreshDrafts" type="button" class="secondary">Atualizar lista</button>
+          <button id="refreshDrafts" type="button" class="secondary">Atualizar</button>
         </div>
         <div id="articleList" class="article-list"></div>
       </section>
 
-      <section class="panel" id="editor">
-        <div class="panel-heading">
-          <div>
-            <h2>Editor JSON</h2>
-            <p>Revise o artigo antes de publicar. Aqui tambem da para colar JSON vindo de um Custom GPT.</p>
+      <section class="panel advanced-panel">
+        <details>
+          <summary>Avancado tecnico</summary>
+          <p>Use apenas se precisar colar JSON de outro gerador ou fazer ajuste fino comigo.</p>
+          <div class="actions">
+            <button type="button" id="saveDraft" class="secondary">Salvar como rascunho</button>
+            <button type="button" id="generatePreview" class="secondary">Atualizar previa</button>
+            <button type="button" id="publishArticle" class="danger">Publicar JSON atual</button>
+            <button id="formatJson" type="button" class="secondary">Formatar JSON</button>
           </div>
-          <button id="formatJson" type="button" class="secondary">Formatar</button>
-        </div>
-        <textarea id="jsonEditor" class="json-editor" spellcheck="false"></textarea>
-      </section>
+          <textarea id="jsonEditor" class="json-editor" spellcheck="false"></textarea>
 
-      <section class="panel" id="preview">
-        <div class="panel-heading">
-          <div>
-            <h2>Preview HTML</h2>
-            <p>Esta e a pagina como o leitor vai ver. Publicar so depois de revisar links, preco, imagem e fontes.</p>
-          </div>
-          <a id="openPreview" class="secondary link-button" href="#" target="_blank">Abrir</a>
-        </div>
-        <iframe id="previewFrame" title="Preview do artigo"></iframe>
+          <form id="briefingForm" class="form-grid legacy-form">
+            <label>
+              Tipo
+              <select name="type">
+                <option value="review">Review</option>
+                <option value="comparison">Comparativo</option>
+                <option value="guide">Guia</option>
+                <option value="ranking">Ranking</option>
+                <option value="deal">Oferta</option>
+              </select>
+            </label>
+            <label>
+              Categoria
+              <input name="category" value="Tecnologia" />
+            </label>
+            <label class="wide">
+              Titulo
+              <input name="title" placeholder="Smart TV LG vale a pena?" />
+            </label>
+            <label>
+              Produto ou tema
+              <input name="product" />
+            </label>
+            <label>
+              Preco bom
+              <input name="goodPrice" />
+            </label>
+            <label class="wide">
+              Fontes
+              <textarea name="sources"></textarea>
+            </label>
+            <button type="submit">Gerar pelo formulario antigo</button>
+          </form>
+        </details>
       </section>
     </main>
 

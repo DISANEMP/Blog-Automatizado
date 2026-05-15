@@ -40,6 +40,10 @@
       "dest": "/api/veredito/article.js"
     },
     {
+      "src": "/api/veredito/publish-slug",
+      "dest": "/api/veredito/publish-slug.js"
+    },
+    {
       "src": "/api/veredito/delete",
       "dest": "/api/veredito/delete.js"
     },
@@ -58,6 +62,10 @@
     {
       "src": "/p/([^/]+)",
       "dest": "/api/veredito/post.js?slug=$1"
+    },
+    {
+      "src": "/rascunho/([^/]+)",
+      "dest": "/api/veredito/draft-page.js?slug=$1"
     },
     {
       "src": "/(.*)",
