@@ -42,17 +42,24 @@ Regras:
 Briefing:
 ${JSON.stringify(brief, null, 2)}`;
 
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.45
-      }
-    })
-  });
+  let response;
+  try {
+    response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseMimeType: "application/json",
+          temperature: 0.45
+        }
+      })
+    });
+  } catch (error) {
+    const article = buildArticleFromBrief(brief);
+    article.generationWarning = `Falha de conexao com Gemini; fallback local usado. ${error.message}`;
+    return { article, provider: "local-template", note: article.generationWarning };
+  }
 
   const data = await response.json();
   if (!response.ok) {
