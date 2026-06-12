@@ -90,10 +90,17 @@ module.exports = async function handler(req, res) {
     };
 
     const result = await generateWithGemini(brief);
+    const editorialWarnings = [
+      extractionError ? `Extracao direta limitada: ${extractionError}` : "",
+      !extracted.imageUrl ? "Imagem principal nao encontrada automaticamente; revise antes de publicar." : "",
+      !extracted.currentPrice && !req.body?.currentPrice ? "Preco nao encontrado automaticamente; confirme manualmente antes de publicar." : ""
+    ].filter(Boolean);
+
     const article = {
       ...result.article,
       slug: slugify(result.article.slug || result.article.title),
       status: "draft",
+      editorialWarnings,
       hero: {
         ...(result.article.hero || {}),
         imageUrl: result.article.hero?.imageUrl || extracted.imageUrl,

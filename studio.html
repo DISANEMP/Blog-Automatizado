@@ -23,8 +23,8 @@
     <main class="workspace">
       <header class="topbar">
         <div>
-          <p class="eyebrow">Blog automatizado</p>
-          <h1>Cole um link. Gere o rascunho. Abra e aprove.</h1>
+          <p class="eyebrow">Blog automatizado com revisão humana</p>
+          <h1>Cole o link e receba um rascunho pronto para revisar</h1>
         </div>
         <span id="statusBadge">Pronto</span>
       </header>
@@ -47,8 +47,8 @@
       <section class="panel hero-panel" id="novo">
         <div class="panel-heading">
           <div>
-            <h2>Novo rascunho por link</h2>
-            <p>Por enquanto, para testar, cole o link de um site ou produto. A ferramenta monta um rascunho e abre a previa em outra aba.</p>
+            <h2>Novo rascunho</h2>
+            <p>Para testar agora: cole o link de um produto, oferta ou pagina. O Studio cria o rascunho, abre uma aba de revisao e deixa voce decidir se publica.</p>
           </div>
           <button id="fillExample" type="button" class="secondary">Testar exemplo</button>
         </div>
@@ -68,6 +68,12 @@
           </label>
           <button id="generateFromUrl" type="button">Gerar rascunho</button>
           <p id="researchStatus">Depois de gerar, use o botao "Abrir rascunho" para ver como ficaria antes de publicar.</p>
+          <ol class="flow-steps" aria-label="Etapas do fluxo">
+            <li>1. Ler link</li>
+            <li>2. Criar artigo</li>
+            <li>3. Abrir revisão</li>
+            <li>4. Publicar só se aprovar</li>
+          </ol>
         </section>
 
         <div id="currentDraft" class="current-draft" hidden></div>
@@ -76,8 +82,8 @@
       <section class="panel" id="rascunhos">
         <div class="panel-heading">
           <div>
-            <h2>Rascunhos e publicados</h2>
-            <p>Cada card abre em uma aba separada. Voce nao precisa mexer em HTML ou JSON.</p>
+            <h2>Fila de publicações</h2>
+            <p>Abra qualquer rascunho em outra aba, revise como leitor, publique ou apague. Nada de mexer em HTML.</p>
           </div>
           <button id="refreshDrafts" type="button" class="secondary">Atualizar</button>
         </div>
@@ -86,7 +92,7 @@
 
       <section class="panel advanced-panel">
         <details>
-          <summary>Avancado tecnico</summary>
+          <summary>Avançado técnico</summary>
           <p>Use apenas se precisar colar JSON de outro gerador ou fazer ajuste fino comigo.</p>
           <div class="actions">
             <button type="button" id="saveDraft" class="secondary">Salvar como rascunho</button>

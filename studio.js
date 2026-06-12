@@ -19,9 +19,17 @@ const currentDraft = document.querySelector("#currentDraft");
 const generatePreview = document.querySelector("#generatePreview");
 
 let currentArticle = null;
+let busy = false;
 
 function setStatus(message) {
   statusBadge.textContent = message;
+}
+
+function setBusy(isBusy, message) {
+  busy = isBusy;
+  generateFromUrl.disabled = isBusy;
+  refreshDrafts.disabled = isBusy;
+  if (message) setStatus(message);
 }
 
 function slugify(value) {
@@ -176,11 +184,16 @@ function renderCurrentDraft(article) {
   currentDraft.hidden = false;
   const isPublished = article.status === "published";
   const url = isPublished ? publicUrl(article) : draftUrl(article);
+  const warnings = Array.isArray(article.editorialWarnings) && article.editorialWarnings.length
+    ? `<ul class="warning-list">${article.editorialWarnings.map((warning) => `<li>${escapeHtml(warning)}</li>`).join("")}</ul>`
+    : "";
   currentDraft.innerHTML = `
+    <span class="draft-kicker">${isPublished ? "Publicado" : "Rascunho pronto para revisar"}</span>
     <h3>${escapeHtml(article.title)}</h3>
-    <p>${escapeHtml(article.category || "Tecnologia")} | ${isPublished ? "publicado" : "rascunho"} | ${escapeHtml(article.slug)}</p>
+    <p>${escapeHtml(article.category || "Tecnologia")} | ${escapeHtml(article.slug)}</p>
+    ${warnings}
     <div class="current-actions">
-      <a class="link-button" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>
+      <a class="link-button primary-action" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>
       ${isPublished ? "" : `<button type="button" class="danger" data-publish-current="${escapeHtml(article.slug)}">Publicar</button>`}
       <button type="button" class="secondary" data-delete-current="${escapeHtml(article.slug)}">Apagar</button>
     </div>`;
@@ -207,13 +220,13 @@ function renderArticleItem(item) {
   const isPublished = item.status === "published";
   const url = isPublished ? `/p/${item.slug}` : `/rascunho/${item.slug}`;
   return `
-    <div class="article-item">
+    <div class="article-item ${isPublished ? "published" : "draft"}">
       <div>
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(item.category || "Tecnologia")} | ${isPublished ? "publicado" : "rascunho"}</p>
       </div>
       <div class="article-actions">
-        <a class="link-button" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>
+        <a class="link-button primary-action" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>
         <button type="button" class="secondary" data-load="${escapeHtml(item.slug)}">Carregar</button>
         ${isPublished ? "" : `<button type="button" class="danger" data-publish="${escapeHtml(item.slug)}">Publicar</button>`}
         <button type="button" class="secondary" data-delete="${escapeHtml(item.slug)}">Apagar</button>
@@ -237,28 +250,39 @@ async function loadArticle(slug) {
 }
 
 async function publishSlug(slug) {
-  setStatus("Publicando...");
-  const result = await postJson("/api/veredito/publish-slug", { slug });
-  putArticle(result.article);
-  await refreshList();
-  window.open(result.postUrl, "_blank");
-  setStatus("Publicado");
+  if (busy) return;
+  setBusy(true, "Publicando...");
+  try {
+    const result = await postJson("/api/veredito/publish-slug", { slug });
+    putArticle(result.article);
+    await refreshList();
+    window.open(result.postUrl, "_blank");
+    setBusy(false, "Publicado");
+  } catch (error) {
+    setBusy(false, error.message);
+  }
 }
 
 async function deleteSlug(slug) {
   if (!window.confirm(`Apagar "${slug}"?`)) return;
-  setStatus("Apagando...");
-  await postJson("/api/veredito/delete", { slug });
-  if (currentArticle?.slug === slug) {
-    currentArticle = null;
-    jsonEditor.value = "";
-    currentDraft.hidden = true;
+  if (busy) return;
+  setBusy(true, "Apagando...");
+  try {
+    await postJson("/api/veredito/delete", { slug });
+    if (currentArticle?.slug === slug) {
+      currentArticle = null;
+      jsonEditor.value = "";
+      currentDraft.hidden = true;
+    }
+    await refreshList();
+    setBusy(false, "Apagado");
+  } catch (error) {
+    setBusy(false, error.message);
   }
-  await refreshList();
-  setStatus("Apagado");
 }
 
 generateFromUrl.addEventListener("click", async () => {
+  if (busy) return;
   const url = sourceUrl.value.trim();
   if (!url) {
     setStatus("Cole um link");
@@ -271,7 +295,7 @@ generateFromUrl.addEventListener("click", async () => {
     previewTab.document.write("<p style='font-family:system-ui;padding:24px'>Gerando rascunho...</p>");
   }
 
-  setStatus("Gerando...");
+  setBusy(true, "Gerando...");
   researchStatus.textContent = "Lendo o link e montando o rascunho. Se o site bloquear, eu ainda tento criar uma previa segura.";
 
   try {
@@ -285,12 +309,14 @@ generateFromUrl.addEventListener("click", async () => {
     await refreshList();
     const urlToOpen = draftUrl(result.article);
     if (previewTab) previewTab.location.href = urlToOpen;
-    researchStatus.textContent = "Rascunho pronto. Revise a aba que abriu antes de publicar.";
-    setStatus("Rascunho pronto");
+    researchStatus.textContent = result.extractionError
+      ? "Rascunho pronto, mas o site limitou a leitura. Revise imagem, preço e fatos antes de publicar."
+      : "Rascunho pronto. Revise a aba que abriu antes de publicar.";
+    setBusy(false, "Rascunho pronto");
   } catch (error) {
     if (previewTab) previewTab.close();
     researchStatus.textContent = "Nao consegui gerar com esse link agora. Tente outro site/produto para testar.";
-    setStatus(error.message);
+    setBusy(false, error.message);
   }
 });
 
