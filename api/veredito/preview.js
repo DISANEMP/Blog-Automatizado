@@ -31,15 +31,24 @@ module.exports = async function handler(req, res) {
 
   try {
     const normalized = normalizeArticle(article, "draft");
-    const row = await upsertArticle(normalized, "draft");
-    const html = renderPage(row.content_json, { mode: "preview" });
+    let row = null;
+    let storageError = "";
+    try {
+      row = await upsertArticle(normalized, "draft");
+    } catch (error) {
+      storageError = error.message;
+    }
+    const storedArticle = row?.content_json || normalized;
+    const html = renderPage(storedArticle, { mode: "preview" });
     res.status(201).json({
       ok: true,
-      article: row.content_json,
+      article: storedArticle,
       record: row,
       html,
-      previewUrl: `/rascunho/${row.slug}`,
-      note: "Preview salvo como rascunho no Supabase."
+      previewUrl: row ? `/rascunho/${row.slug}` : null,
+      storage: row ? "supabase" : "browser",
+      storageError,
+      note: row ? "Preview salvo como rascunho no Supabase." : "Preview gerado sem salvar no Supabase."
     });
   } catch (error) {
     res.status(error.statusCode || 500).json({

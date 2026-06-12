@@ -1,7 +1,7 @@
 const { generateWithGemini } = require("../_lib/gemini");
 const { fetchProductPage, googleSearch } = require("../_lib/page-research");
 const { upsertArticle } = require("../_lib/supabase-admin");
-const { slugify } = require("../../scripts/render-veredito");
+const { renderPage, slugify } = require("../../scripts/render-veredito");
 
 function inferFromUrl(sourceUrl) {
   const parsed = new URL(sourceUrl);
@@ -131,7 +131,15 @@ module.exports = async function handler(req, res) {
       sources: brief.researchSources
     };
 
-    const row = await upsertArticle(article, "draft");
+    let row = null;
+    let storageError = "";
+    try {
+      row = await upsertArticle(article, "draft");
+    } catch (error) {
+      storageError = error.message;
+    }
+    const storedArticle = row?.content_json || article;
+    const html = renderPage(storedArticle, { mode: "preview" });
     res.status(201).json({
       ok: true,
       provider: result.provider,
@@ -139,8 +147,12 @@ module.exports = async function handler(req, res) {
       extracted,
       extractionError,
       searchSources,
-      article: row.content_json,
-      record: row
+      storage: row ? "supabase" : "browser",
+      storageError,
+      article: storedArticle,
+      record: row,
+      html,
+      previewUrl: row ? `/rascunho/${row.slug}` : null
     });
   } catch (error) {
     res.status(error.statusCode || 500).json({

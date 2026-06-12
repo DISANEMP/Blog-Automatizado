@@ -10,8 +10,11 @@ module.exports = async function handler(req, res) {
     const articles = await listArticles();
     res.status(200).json({ ok: true, articles });
   } catch (error) {
-    res.status(error.statusCode || 500).json({
-      error: error.message,
+    res.status(200).json({
+      ok: true,
+      articles: [],
+      storage: "browser",
+      storageError: error.message,
       details: error.details || null
     });
   }

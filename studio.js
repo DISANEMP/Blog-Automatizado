@@ -17,6 +17,7 @@ const sourceAngle = document.querySelector("#sourceAngle");
 const researchStatus = document.querySelector("#researchStatus");
 const currentDraft = document.querySelector("#currentDraft");
 const generatePreview = document.querySelector("#generatePreview");
+const LOCAL_DRAFTS_KEY = "veredito.localDrafts";
 
 let currentArticle = null;
 let busy = false;
@@ -168,6 +169,49 @@ function putArticle(article) {
   renderCurrentDraft(article);
 }
 
+function loadLocalDrafts() {
+  try {
+    return JSON.parse(localStorage.getItem(LOCAL_DRAFTS_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalDraft(article, html = "") {
+  const drafts = loadLocalDrafts().filter((item) => item.article?.slug !== article.slug);
+  drafts.unshift({
+    article,
+    html,
+    updatedAt: new Date().toISOString()
+  });
+  localStorage.setItem(LOCAL_DRAFTS_KEY, JSON.stringify(drafts.slice(0, 30)));
+}
+
+function getLocalDraft(slug) {
+  return loadLocalDrafts().find((item) => item.article?.slug === slug) || null;
+}
+
+function deleteLocalDraft(slug) {
+  localStorage.setItem(LOCAL_DRAFTS_KEY, JSON.stringify(loadLocalDrafts().filter((item) => item.article?.slug !== slug)));
+}
+
+function localDraftRows() {
+  return loadLocalDrafts().map((item) => ({
+    title: item.article.title,
+    slug: item.article.slug,
+    status: "draft",
+    category: item.article.category || "Tecnologia",
+    source: "browser"
+  }));
+}
+
+function openHtmlInTab(html) {
+  const blob = new Blob([html], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+
 function draftUrl(article) {
   return `/rascunho/${article.slug}`;
 }
@@ -183,6 +227,7 @@ function renderCurrentDraft(article) {
   }
   currentDraft.hidden = false;
   const isPublished = article.status === "published";
+  const local = getLocalDraft(article.slug);
   const url = isPublished ? publicUrl(article) : draftUrl(article);
   const warnings = Array.isArray(article.editorialWarnings) && article.editorialWarnings.length
     ? `<ul class="warning-list">${article.editorialWarnings.map((warning) => `<li>${escapeHtml(warning)}</li>`).join("")}</ul>`
@@ -193,8 +238,10 @@ function renderCurrentDraft(article) {
     <p>${escapeHtml(article.category || "Tecnologia")} | ${escapeHtml(article.slug)}</p>
     ${warnings}
     <div class="current-actions">
-      <a class="link-button primary-action" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>
-      ${isPublished ? "" : `<button type="button" class="danger" data-publish-current="${escapeHtml(article.slug)}">Publicar</button>`}
+      ${local && !isPublished
+        ? `<button type="button" class="primary-action" data-open-local-current="${escapeHtml(article.slug)}">Abrir rascunho</button>`
+        : `<a class="link-button primary-action" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>`}
+      ${isPublished ? "" : `<button type="button" class="danger" data-publish-current="${escapeHtml(article.slug)}"${local ? " disabled title=\"Publicacao publica exige Supabase ativo\"" : ""}>Publicar</button>`}
       <button type="button" class="secondary" data-delete-current="${escapeHtml(article.slug)}">Apagar</button>
     </div>`;
 }
@@ -203,32 +250,43 @@ async function refreshList() {
   setStatus("Carregando...");
   try {
     const data = await requestJson("/api/veredito/drafts");
-    const articles = data.articles || [];
+    const serverArticles = data.articles || [];
+    const localArticles = localDraftRows().filter((local) => !serverArticles.some((server) => server.slug === local.slug));
+    const articles = [...localArticles, ...serverArticles];
     draftCount.textContent = articles.filter((item) => item.status !== "published").length;
     publishedCount.textContent = articles.filter((item) => item.status === "published").length;
     articleList.innerHTML = articles.length
       ? articles.map(renderArticleItem).join("")
       : "<p>Nenhum rascunho ainda. Cole um link acima e gere o primeiro.</p>";
-    setStatus("Pronto");
+    setStatus(data.storageError ? "Modo teste local" : "Pronto");
+    if (data.storageError) researchStatus.textContent = "Supabase indisponivel. Voce ainda pode gerar e abrir rascunhos neste navegador; publicar fica bloqueado ate corrigir o banco.";
   } catch (error) {
-    articleList.innerHTML = `<p>${error.message}</p>`;
-    setStatus("Erro");
+    const articles = localDraftRows();
+    draftCount.textContent = articles.length;
+    publishedCount.textContent = "0";
+    articleList.innerHTML = articles.length
+      ? articles.map(renderArticleItem).join("")
+      : `<p>${error.message}</p>`;
+    setStatus(articles.length ? "Modo teste local" : "Erro");
   }
 }
 
 function renderArticleItem(item) {
   const isPublished = item.status === "published";
+  const isLocal = item.source === "browser";
   const url = isPublished ? `/p/${item.slug}` : `/rascunho/${item.slug}`;
   return `
     <div class="article-item ${isPublished ? "published" : "draft"}">
       <div>
         <h3>${escapeHtml(item.title)}</h3>
-        <p>${escapeHtml(item.category || "Tecnologia")} | ${isPublished ? "publicado" : "rascunho"}</p>
+        <p>${escapeHtml(item.category || "Tecnologia")} | ${isPublished ? "publicado" : isLocal ? "rascunho local" : "rascunho"}</p>
       </div>
       <div class="article-actions">
-        <a class="link-button primary-action" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>
+        ${isLocal
+          ? `<button type="button" class="primary-action" data-open-local="${escapeHtml(item.slug)}">Abrir rascunho</button>`
+          : `<a class="link-button primary-action" href="${url}" target="_blank">${isPublished ? "Abrir post" : "Abrir rascunho"}</a>`}
         <button type="button" class="secondary" data-load="${escapeHtml(item.slug)}">Carregar</button>
-        ${isPublished ? "" : `<button type="button" class="danger" data-publish="${escapeHtml(item.slug)}">Publicar</button>`}
+        ${isPublished ? "" : `<button type="button" class="danger" data-publish="${escapeHtml(item.slug)}"${isLocal ? " disabled title=\"Publicacao publica exige Supabase ativo\"" : ""}>Publicar</button>`}
         <button type="button" class="secondary" data-delete="${escapeHtml(item.slug)}">Apagar</button>
       </div>
     </div>`;
@@ -244,6 +302,12 @@ function escapeHtml(value) {
 
 async function loadArticle(slug) {
   setStatus("Carregando...");
+  const local = getLocalDraft(slug);
+  if (local) {
+    putArticle(local.article);
+    setStatus("Rascunho local carregado");
+    return;
+  }
   const data = await requestJson(`/api/veredito/article?slug=${encodeURIComponent(slug)}`);
   putArticle(data.article);
   setStatus("Rascunho carregado");
@@ -268,7 +332,12 @@ async function deleteSlug(slug) {
   if (busy) return;
   setBusy(true, "Apagando...");
   try {
-    await postJson("/api/veredito/delete", { slug });
+    const local = getLocalDraft(slug);
+    if (local) {
+      deleteLocalDraft(slug);
+    } else {
+      await postJson("/api/veredito/delete", { slug });
+    }
     if (currentArticle?.slug === slug) {
       currentArticle = null;
       jsonEditor.value = "";
@@ -305,11 +374,20 @@ generateFromUrl.addEventListener("click", async () => {
       angle: sourceAngle.value.trim()
     });
     providerStatus.textContent = result.provider || "online";
+    if (result.storage === "browser") saveLocalDraft(result.article, result.html);
     putArticle(result.article);
     await refreshList();
-    const urlToOpen = draftUrl(result.article);
-    if (previewTab) previewTab.location.href = urlToOpen;
-    researchStatus.textContent = result.extractionError
+    if (previewTab) {
+      if (result.previewUrl) previewTab.location.href = result.previewUrl;
+      else {
+        previewTab.document.open();
+        previewTab.document.write(result.html || "<p>Rascunho gerado, mas sem HTML de preview.</p>");
+        previewTab.document.close();
+      }
+    }
+    researchStatus.textContent = result.storageError
+      ? "Rascunho gerado em modo teste local. O Supabase esta fora, entao publicar fica bloqueado ate corrigir o banco."
+      : result.extractionError
       ? "Rascunho pronto, mas o site limitou a leitura. Revise imagem, preço e fatos antes de publicar."
       : "Rascunho pronto. Revise a aba que abriu antes de publicar.";
     setBusy(false, "Rascunho pronto");
@@ -325,9 +403,11 @@ form.addEventListener("submit", async (event) => {
   setStatus("Gerando...");
   try {
     const result = await postJson("/api/veredito/generate", { brief: formData() });
+    if (result.storage === "browser") saveLocalDraft(result.article, result.html);
     putArticle(result.article);
     await refreshList();
-    window.open(draftUrl(result.article), "_blank");
+    if (result.previewUrl) window.open(result.previewUrl, "_blank");
+    else if (result.html) openHtmlInTab(result.html);
     setStatus("Rascunho gerado");
   } catch (error) {
     const article = buildLocalArticle(formData());
@@ -341,6 +421,7 @@ saveDraft.addEventListener("click", async () => {
   try {
     const article = getArticleFromEditor();
     const result = await postJson("/api/veredito/preview", { article });
+    if (result.storage === "browser") saveLocalDraft(result.article, result.html);
     putArticle(result.article);
     await refreshList();
     setStatus("Rascunho salvo");
@@ -353,8 +434,10 @@ generatePreview.addEventListener("click", async () => {
   try {
     const article = getArticleFromEditor();
     const result = await postJson("/api/veredito/preview", { article });
+    if (result.storage === "browser") saveLocalDraft(result.article, result.html);
     putArticle(result.article);
-    window.open(result.previewUrl || draftUrl(result.article), "_blank");
+    if (result.previewUrl) window.open(result.previewUrl, "_blank");
+    else if (result.html) openHtmlInTab(result.html);
     setStatus("Rascunho aberto");
   } catch (error) {
     setStatus(error.message);
@@ -389,6 +472,13 @@ articleList.addEventListener("click", (event) => {
   const loadButton = event.target.closest("[data-load]");
   const deleteButton = event.target.closest("[data-delete]");
   const publishButton = event.target.closest("[data-publish]");
+  const openLocalButton = event.target.closest("[data-open-local]");
+  if (openLocalButton) {
+    const local = getLocalDraft(openLocalButton.dataset.openLocal);
+    if (local?.html) openHtmlInTab(local.html);
+    else setStatus("Preview local nao encontrado");
+    return;
+  }
   if (loadButton) loadArticle(loadButton.dataset.load).catch((error) => setStatus(error.message));
   if (deleteButton) deleteSlug(deleteButton.dataset.delete).catch((error) => setStatus(error.message));
   if (publishButton) publishSlug(publishButton.dataset.publish).catch((error) => setStatus(error.message));
@@ -397,6 +487,13 @@ articleList.addEventListener("click", (event) => {
 currentDraft.addEventListener("click", (event) => {
   const deleteButton = event.target.closest("[data-delete-current]");
   const publishButton = event.target.closest("[data-publish-current]");
+  const openLocalButton = event.target.closest("[data-open-local-current]");
+  if (openLocalButton) {
+    const local = getLocalDraft(openLocalButton.dataset.openLocalCurrent);
+    if (local?.html) openHtmlInTab(local.html);
+    else setStatus("Preview local nao encontrado");
+    return;
+  }
   if (deleteButton) deleteSlug(deleteButton.dataset.deleteCurrent).catch((error) => setStatus(error.message));
   if (publishButton) publishSlug(publishButton.dataset.publishCurrent).catch((error) => setStatus(error.message));
 });

@@ -1,6 +1,6 @@
 const { generateWithGemini } = require("../_lib/gemini");
 const { upsertArticle } = require("../_lib/supabase-admin");
-const { slugify } = require("../../scripts/render-veredito");
+const { renderPage, slugify } = require("../../scripts/render-veredito");
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
@@ -16,13 +16,24 @@ module.exports = async function handler(req, res) {
       slug: slugify(result.article.slug || result.article.title),
       status: "draft"
     };
-    const row = await upsertArticle(article, "draft");
+    let row = null;
+    let storageError = "";
+    try {
+      row = await upsertArticle(article, "draft");
+    } catch (error) {
+      storageError = error.message;
+    }
+    const storedArticle = row?.content_json || article;
     res.status(201).json({
       ok: true,
       provider: result.provider,
       note: result.note,
-      article: row.content_json,
-      record: row
+      storage: row ? "supabase" : "browser",
+      storageError,
+      article: storedArticle,
+      record: row,
+      html: renderPage(storedArticle, { mode: "preview" }),
+      previewUrl: row ? `/rascunho/${row.slug}` : null
     });
   } catch (error) {
     res.status(error.statusCode || 500).json({

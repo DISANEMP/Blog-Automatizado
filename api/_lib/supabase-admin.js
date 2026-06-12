@@ -11,16 +11,24 @@ function requireSupabase() {
 
 async function supabaseFetch(path, options = {}) {
   requireSupabase();
-  const response = await fetch(`${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/${path}`, {
-    ...options,
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
-      "Content-Type": "application/json",
-      Prefer: "return=representation",
-      ...(options.headers || {})
-    }
-  });
+  let response;
+  try {
+    response = await fetch(`${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/${path}`, {
+      ...options,
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+        ...(options.headers || {})
+      }
+    });
+  } catch (error) {
+    const wrapped = new Error(`Supabase indisponivel ou URL invalida. Confira SUPABASE_URL na Vercel. Detalhe: ${error.message}`);
+    wrapped.statusCode = 503;
+    wrapped.details = { originalMessage: error.message };
+    throw wrapped;
+  }
   const text = await response.text();
   const data = text ? JSON.parse(text) : null;
   if (!response.ok) {
